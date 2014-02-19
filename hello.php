@@ -1,16 +1,6 @@
 <?php
-	$map = new mapObj("/var/www/2213/chapter02/shape.map");
-
+	$map = new mapObj("/var/www/2213/chapter02/normal.map");
 	$layers = $map->getAllLayerNames();
-
-	function runMyFunction() {
-    	echo 'I just ran a php function';
-    	//$map->set("NAME","asdf");
-  	}
-
-	if (isset($_GET['hello'])) {
-		runMyFunction();
-	}
 ?>
 <html>
 	<head>
@@ -18,28 +8,45 @@
 	</head>
 	<body>
 		<h1>Layers</h1>
-		<select name="layers" onchange="">
-			<?php 
-				$layers = $map->getAllLayerNames();
+		<form name="layers" action="hello.php" method="POST">
+			<select name="cbLayers">
+				<?php 
+					foreach($layers as $layer) {
+						echo "<option value='$layer'>" . $layer . "</option>";
+					}	
+				?>
+			</select>
+			<input type="submit">
+		</form>
+		<hr>
+		<h1>Style</h1>
+		<form name="style" action="hello.php" method="POST">
+			<select name="styles">
+				<option value="singleSymbol">Single Symbol</option>
+				<option value="categorizedSymbol">Categorized Symbol</option>
+				<option value="graduatedSymbol">Graduated Symbol</option>	
+			</select>
+			<input type="submit">
+		</form>
+		<hr>
+		<h1>Fields</h1>
+		<select name="fields">
+			<?php
+				if (isset($_POST['cbLayers'])) {
+					$layer = $map->getLayerByName($_POST['cbLayers']);	 	
 
-				foreach($layers as $layer) {
-					echo "<option value='$layer'>" . $layer . "</option>";
-				}	
+					//open layer to work with it
+					$status = $layer->open();
+					
+					//read all fields of layer
+					$classes = $layer->getItems();
+					
+					foreach ($classes as $class) {
+						echo "<option value='$class'>" . $class . "</option>";
+					}
+				} 
 			?>
 		</select>
 		<hr>
-		<h1>Fields</h1>
-		
-			<?php 
-				$layer = $map->getLayerByName('germany_adm3');
-				
-				$class = $layer->getClass(0);
-
-				echo $class->name;
-			?>
-		
-		<hr>
-
-		<a href='hello.php?hello=true'>Run PHP Function</a>
 	</body>
 </html>

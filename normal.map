@@ -1,0 +1,95 @@
+MAP
+  EXTENT 5.87161922454834 47.2698593139648 15.0381126403809 55.0565261840821
+  IMAGETYPE "png"
+  NAME "QGIS-MAP"
+  SIZE 600 600
+  STATUS ON
+  UNITS DD
+
+  OUTPUTFORMAT
+    NAME "png"
+    MIMETYPE "image/png"
+    DRIVER "AGG/PNG"
+    EXTENSION "png"
+    IMAGEMODE RGB
+    TRANSPARENT TRUE
+  END # OUTPUTFORMAT
+
+  PROJECTION
+    "proj=longlat"
+    "datum=WGS84"
+    "no_defs"
+  END # PROJECTION
+  LEGEND
+    KEYSIZE 20 10
+    KEYSPACING 5 5
+    LABEL
+      SIZE MEDIUM
+      OFFSET 0 0
+      SHADOWSIZE 1 1
+      TYPE BITMAP
+    END # LABEL
+    STATUS OFF
+  END # LEGEND
+
+  QUERYMAP
+    SIZE -1 -1
+    STATUS OFF
+    STYLE HILITE
+  END # QUERYMAP
+
+  SCALEBAR
+    INTERVALS 4
+    LABEL
+      SIZE MEDIUM
+      OFFSET 0 0
+      SHADOWSIZE 1 1
+      TYPE BITMAP
+    END # LABEL
+    SIZE 200 3
+    STATUS OFF
+    UNITS MILES
+  END # SCALEBAR
+
+  WEB
+    FOOTER ""
+    HEADER ""
+    TEMPPATH ""
+    METADATA
+      "ows_onlineresource"	"http://localhost/cgi-bin/mapserv?map=/home/matthias/Documents/MapFile Export/normal.map"
+      "ows_enable_request"	"*"
+      "ows_srs"	"EPSG:4326"
+      "ows_title"	"QGIS-MAP"
+    END # METADATA
+    TEMPLATE "[templatepath]"
+  END # WEB
+
+  LAYER
+    DATA "/home/matthias/Downloads/shapes/DEU_adm3.shp"
+    EXTENT 5.87161922454834 47.2698593139648 15.0381126403809 55.0565261840821
+    METADATA
+      "ows_title"	"DEU_adm3"
+    END # METADATA
+    NAME "DEU_adm3"
+    PROJECTION
+      "proj=longlat"
+      "datum=WGS84"
+      "no_defs"
+    END # PROJECTION
+    STATUS ON
+    TILEITEM "location"
+    TYPE POLYGON
+    UNITS METERS
+    CLASS
+      NAME "Single symbol"
+      STYLE
+        COLOR 179 34 174
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+  END # LAYER
+
+END # MAP

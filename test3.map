@@ -1,0 +1,268 @@
+MAP
+  EXTENT 5.87161922454834 47.2698593139648 15.0381126403809 55.0565261840823
+  IMAGETYPE "jpeg"
+  NAME "mapserver"
+  SIZE 600 600
+  STATUS ON
+  UNITS DD
+
+  OUTPUTFORMAT
+    NAME "jpeg"
+    MIMETYPE "image/jpeg"
+    DRIVER "AGG/JPEG"
+    EXTENSION "jpg"
+    IMAGEMODE RGB
+    TRANSPARENT TRUE
+  END # OUTPUTFORMAT
+
+  PROJECTION
+    "proj=longlat"
+    "datum=WGS84"
+    "no_defs"
+  END # PROJECTION
+  LEGEND
+    KEYSIZE 20 10
+    KEYSPACING 5 5
+    LABEL
+      SIZE MEDIUM
+      OFFSET 0 0
+      SHADOWSIZE 1 1
+      TYPE BITMAP
+    END # LABEL
+    STATUS OFF
+  END # LEGEND
+
+  QUERYMAP
+    SIZE -1 -1
+    STATUS OFF
+    STYLE HILITE
+  END # QUERYMAP
+
+  SCALEBAR
+    INTERVALS 4
+    LABEL
+      SIZE MEDIUM
+      OFFSET 0 0
+      SHADOWSIZE 1 1
+      TYPE BITMAP
+    END # LABEL
+    SIZE 200 3
+    STATUS OFF
+    UNITS MILES
+  END # SCALEBAR
+
+  WEB
+    FOOTER ""
+    HEADER ""
+    TEMPPATH ""
+    METADATA
+      "ows_onlineresource"	"http://localhost/cgi-bin/mapserv?map=/home/matthias/Documents/MapFile Export/test3.map"
+      "ows_enable_request"	"*"
+      "ows_srs"	"EPSG:4326"
+      "ows_title"	"mapserver"
+    END # METADATA
+    TEMPLATE "[templatepath]"
+  END # WEB
+
+  LAYER
+    DATA "/home/matthias/Downloads/shapes/DEU_adm1.shp"
+    EXTENT 5.87161922454851 47.2698593139648 15.0381126403809 55.0565261840823
+    METADATA
+      "ows_title"	"DEU_adm1"
+    END # METADATA
+    NAME "DEU_adm1"
+    PROJECTION
+      "proj=longlat"
+      "datum=WGS84"
+      "no_defs"
+    END # PROJECTION
+    STATUS ON
+    TILEITEM "location"
+    TYPE POLYGON
+    UNITS METERS
+    CLASS
+      NAME "Unknown"
+      EXPRESSION ("[VARNAME_1]" ="")
+      STYLE
+        COLOR 254 240 217
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Bavaria"
+      EXPRESSION ("[VARNAME_1]" ="Bavaria")
+      STYLE
+        COLOR 253 225 185
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Hesse"
+      EXPRESSION ("[VARNAME_1]" ="Hesse")
+      STYLE
+        COLOR 253 211 153
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Lower Saxony"
+      EXPRESSION ("[VARNAME_1]" ="Lower Saxony")
+      STYLE
+        COLOR 252 191 128
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Mecklenburg-West Pomerania"
+      EXPRESSION ("[VARNAME_1]" ="Mecklenburg-West Pomerania")
+      STYLE
+        COLOR 252 166 108
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "North Rhine-Westphalia"
+      EXPRESSION ("[VARNAME_1]" ="North Rhine-Westphalia")
+      STYLE
+        COLOR 252 141 89
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Rhineland-Palatinate"
+      EXPRESSION ("[VARNAME_1]" ="Rhineland-Palatinate")
+      STYLE
+        COLOR 242 114 73
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Saxony"
+      EXPRESSION ("[VARNAME_1]" ="Saxony")
+      STYLE
+        COLOR 232 87 58
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Saxony-Anhalt"
+      EXPRESSION ("[VARNAME_1]" ="Saxony-Anhalt")
+      STYLE
+        COLOR 217 59 40
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Thuringia"
+      EXPRESSION ("[VARNAME_1]" ="Thuringia")
+      STYLE
+        COLOR 198 29 20
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+  END # LAYER
+
+  LAYER
+    DATA "/home/matthias/Downloads/shapes/DEU_adm3.shp"
+    EXTENT 5.87161922454834 47.2698593139648 15.0381126403809 55.0565261840821
+    METADATA
+      "ows_title"	"DEU_adm3"
+    END # METADATA
+    NAME "DEU_adm3"
+    PROJECTION
+      "proj=longlat"
+      "datum=WGS84"
+      "no_defs"
+    END # PROJECTION
+    STATUS ON
+    TILEITEM "location"
+    TYPE POLYGON
+    UNITS METERS
+    CLASS
+      NAME "1.0000 - 2.0000"
+      EXPRESSION ( ([ID_1]  > 1) And ([ID_1]  <= 2))
+      STYLE
+        COLOR 247 251 255
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "2.0000 - 7.0000"
+      EXPRESSION ( ([ID_1]  > 2) And ([ID_1]  <= 7))
+      STYLE
+        COLOR 199 220 239
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "7.0000 - 10.0000"
+      EXPRESSION ( ([ID_1]  > 7) And ([ID_1]  <= 10))
+      STYLE
+        COLOR 114 178 215
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "10.0000 - 13.0000"
+      EXPRESSION ( ([ID_1]  > 10) And ([ID_1]  <= 13))
+      STYLE
+        COLOR 40 120 184
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "13.0000 - 16.0000"
+      EXPRESSION ( ([ID_1]  > 13) And ([ID_1]  <= 16))
+      STYLE
+        COLOR 8 48 107
+      END # STYLE
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+  END # LAYER
+
+END # MAP
