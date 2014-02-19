@@ -1,0 +1,29 @@
+# This is our "Hello World" mapfile
+MAP
+NAME "Hello World"
+SIZE 400 300
+IMAGECOLOR 249 245 186
+IMAGETYPE png
+EXTENT -1.0 -1.0 1.0 1.0
+#WEB
+#     TEMPLATE "/var/www/2213/chapter02/hello.html"
+#     IMAGEPATH "/var/www/htdocs/tmp/"
+#     IMAGEURL "/htdocs/tmp/"
+#END
+LAYER NAME "my_layer"					 
+     STATUS default
+     TYPE point
+     FEATURE
+          POINTS  0.00 0.00 END
+          TEXT "Hello World"
+     END # end feature
+     CLASS
+          STYLE
+               COLOR 255 0 0
+          END
+          LABEL
+               TYPE bitmap
+          END
+     END
+END
+END
