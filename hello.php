@@ -1,7 +1,5 @@
 <?php
 	$map = new mapObj("/var/www/2213/chapter02/DEU_adm1.map");
-	// $map->set('name', 'asdfghj');
-	// $map->save($map->mappath . "DEU_adm1.map");
 
 	$layers = $map->getAllLayerNames();
 
@@ -44,7 +42,7 @@
 
 		//TODO iterate over all colors and features and generate classes and styles
 
-		//create classObject (set Name, set Expression)
+		//create classObject (set Name(Layername), set Expression(filter for different styling))
 		$class = new classObj($layer);
 		$class->set("name","Berlin");
 		$class->setExpression("('[NAME_1]' = 'Berlin')");
