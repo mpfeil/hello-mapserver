@@ -81,10 +81,145 @@ MAP
     TYPE POLYGON
     UNITS METERS
     CLASS
+      NAME "Baden-Württemberg"
+      EXPRESSION ('[NAME_1]' = 'Baden-Württemberg')
+      STYLE
+        COLOR 48 255 33
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Bayern"
+      EXPRESSION ('[NAME_1]' = 'Bayern')
+      STYLE
+        COLOR 49 240 48
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
       NAME "Berlin"
       EXPRESSION ('[NAME_1]' = 'Berlin')
       STYLE
-        COLOR 128 175 27
+        COLOR 50 225 63
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Brandenburg"
+      EXPRESSION ('[NAME_1]' = 'Brandenburg')
+      STYLE
+        COLOR 52 210 77
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Bremen"
+      EXPRESSION ('[NAME_1]' = 'Bremen')
+      STYLE
+        COLOR 53 194 92
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Hamburg"
+      EXPRESSION ('[NAME_1]' = 'Hamburg')
+      STYLE
+        COLOR 54 179 107
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Hessen"
+      EXPRESSION ('[NAME_1]' = 'Hessen')
+      STYLE
+        COLOR 55 164 122
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Mecklenburg-Vorpommern"
+      EXPRESSION ('[NAME_1]' = 'Mecklenburg-Vorpommern')
+      STYLE
+        COLOR 56 149 137
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Niedersachsen"
+      EXPRESSION ('[NAME_1]' = 'Niedersachsen')
+      STYLE
+        COLOR 58 134 151
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Nordrhein-Westfalen"
+      EXPRESSION ('[NAME_1]' = 'Nordrhein-Westfalen')
+      STYLE
+        COLOR 59 119 166
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Rheinland-Pfalz"
+      EXPRESSION ('[NAME_1]' = 'Rheinland-Pfalz')
+      STYLE
+        COLOR 60 104 181
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Saarland"
+      EXPRESSION ('[NAME_1]' = 'Saarland')
+      STYLE
+        COLOR 61 89 196
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Sachsen-Anhalt"
+      EXPRESSION ('[NAME_1]' = 'Sachsen-Anhalt')
+      STYLE
+        COLOR 62 73 211
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Sachsen"
+      EXPRESSION ('[NAME_1]' = 'Sachsen')
+      STYLE
+        COLOR 64 58 225
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Schleswig-Holstein"
+      EXPRESSION ('[NAME_1]' = 'Schleswig-Holstein')
+      STYLE
+        COLOR 65 43 240
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "Thüringen"
+      EXPRESSION ('[NAME_1]' = 'Thüringen')
+      STYLE
+        COLOR 66 28 255
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
