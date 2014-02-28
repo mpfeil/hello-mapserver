@@ -5,9 +5,10 @@
 	$layers = $map->getAllLayerNames();
 
 	if (isset($_POST["submitStyle"])) {
-
+		$style = $_POST["styles"];
 		$startColor = hex2rgb($_POST["startColor"]);
 		$endColor = hex2rgb($_POST["endColor"]);
+		$classes = $_POST["classes"];
 
 		$field = "";
 
@@ -17,12 +18,18 @@
 			$field = "NAME_1";
 		}
 
-		$featuresInLayer = getNumOfFeatures($map,$layer,$field);
-
-		$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($featuresInLayer));
-
-		generateCategorizedStyle($map,$layer,$field,$featuresInLayer,$colors);
-
+		if ($style == "singleSymbol") {
+			# code...
+		} else if ($style == "categorizedSymbol") {
+			$featuresInLayer = getNumOfFeatures($map,$layer,$field);
+			$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($featuresInLayer));
+			generateCategorizedStyle($map,$layer,$field,$featuresInLayer,$colors);
+		} else if ($style == "graduatedSymbol") {
+			if ($_POST["mode"] == "equalInterval") {
+				equalInterval($map,$layer,$field,$startColor,$endColor,$classes);
+			}
+		}
+		
 		$image=$map->draw();
     	$image_url=$image->saveWebImage();
 	}
@@ -45,7 +52,6 @@
 	}
 
 	function generateCategorizedStyle($map,$layer,$field,$featuresInLayer,$colors) {
-		
 		//remove all classes for layer
 		while ($layer->numclasses > 0) {
 		    $layer->removeClass(0);
@@ -100,6 +106,68 @@
 	   //return implode(",", $rgb); // returns the rgb values separated by commas
 	   return $rgb; // returns an array with the rgb values
 	}
+
+	//generates equal interval symbols for $field of $layer with $classes
+	function equalInterval($map,$layer,$field,$startColor,$endColor,$classes) {
+		$min;
+		$max;
+		$range;
+
+		$status = $layer->open();
+		$status = $layer->whichShapes($map->extent);	
+		while ($shape = $layer->nextShape())
+		{
+			if (!$min && !$max) {
+				$min = $shape->values[$field];
+				$max = $shape->values[$field];
+			} else {
+				if ($shape->values[$field] < $min) {
+					$min = $shape->values[$field];
+				} else if ($shape->values[$field] > $max) {
+					$max = $shape->values[$field];
+				}
+			}
+		}
+		$layer->close();
+
+		$range = ($max - $min) / $classes;
+
+		//get Color for amount of classes
+		$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),$classes);
+
+		//remove all classes for layer
+		while ($layer->numclasses > 0) {
+		    $layer->removeClass(0);
+		}
+
+		$tempMin = $min;
+
+		//create classObject (set Name(Layername), set Expression(filter for different styling))
+		for ($i=0; $i < $classes; $i++) {
+			$rangeStart = $min ;
+			$rangeEnd = $min + $range ;
+			$class = new classObj($layer);
+			$class->set("name", $rangeStart . " - " . $rangeEnd);
+
+			//check if it is the starting class
+			if ($rangeStart == $tempMin) {
+				$class->setExpression("(([$field] >= $rangeStart) AND ([$field] <= $rangeEnd))");	
+			} else {
+				$class->setExpression("(([$field] > $rangeStart) AND ([$field] <= $rangeEnd))");
+			}
+			
+			//create styleObject
+			$style = new styleObj($class);
+			$style->color->setRGB($colors[$i][0],$colors[$i][1],$colors[$i][2]);
+			$style->outlinecolor->setRGB(0,0,0);
+			$style->width = 0.26;
+
+			$min += $range;
+		}
+
+		//save map
+		$map->save($map->mappath . "DEU_adm1.map");
+	}
 ?>
 <html>
 	<head>
@@ -142,9 +210,19 @@
 						foreach ($attributes as $key => $value) {
 							echo "<option value='$value'>". $value . "</option>";
 						}
-					} 
+					}
 				?>
 			</select>
+			<br />
+			<select name="mode">
+				<option value="equalInterval">Equal Interval</option>
+				<option value="quantile">Quantile (Equal Count)</option>
+				<option value="naturalBreaks">Natural Breaks (Jenks)</option>
+				<option value="standardDeviation">Standard Deviation</option>
+				<option value="prettyBreaks">Pretty Breaks</option>	
+			</select>
+			<br />
+			<input type="number" min="0" max="20" step="1" value="5" name="classes"/>
 			<br />
 			<input name="startColor" class="color"> - <input name="endColor" class="color">
 			<input type="submit" name="submitStyle">
