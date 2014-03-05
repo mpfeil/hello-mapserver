@@ -27,6 +27,8 @@
 		} else if ($style == "graduatedSymbol") {
 			if ($_POST["mode"] == "equalInterval") {
 				equalInterval($map,$layer,$field,$startColor,$endColor,$classes);
+			} else if ($_POST["mode"] == "naturalBreaks") {
+				$test = jenks(array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16),8);
 			}
 		}
 		
@@ -205,55 +207,46 @@
 			for ($i=1; $i < $n_classes + 1; $i++) { 
 				$lower_class_limits[1][$i] = 1;
 				$variance_combinations[1][$i] = 0;
-				// in the original implementation, 9999999 is used but
-            	// since PHP has `Infinity`, we use that.
 				for ($j=2; $j < count($data)+1; $j++) { 
-					$variance_combinations[$j][$i] = Infinity;
+					$variance_combinations[$j][$i] = 9999999;
 				}
 			}
-			// print_r($lower_class_limits);
-			// echo "<br />";
-			// print_r($variance_combinations);
-			// echo "<br />";
 
-			for ($l=2; $l < count($data)+1 ; $l++) { 
+			for ($l=2; $l < count($data)+1 ; $l++) {
 				$sum = 0;
 				$sum_squares = 0;
 				$w = 0;
 				$i4 = 0;
 
-				for ($m=1; $m < $l + 1 ; $m++) { 
+				for ($m=1; $m <  $l + 1; $m++) {
+					
 					$lower_class_limit = $l - $m + 1;
-					// echo "Lower__Class_Limit: " . $lower_class_limit . "<br />";
+
 					$val = $data[$lower_class_limit - 1];
-					// echo "Val" . $val ."<br />";
-
+					
 					$w++;
-
+					
 					$sum += $val;
 					$sum_squares += $val * $val;
-
+	
 					$variance = $sum_squares - ($sum * $sum) / $w;
-					// echo $variance . "<br />";
+				
 					$i4 = $lower_class_limit - 1;
-					// echo $i4 . "<br />";
-
+			
 					if ($i4 !== 0) {
 						for ($j=2; $j < $n_classes + 1; $j++) {
-							echo $variance_combinations[$l][$j] . "<br />";
-							echo $variance + $variance_combinations[$i4][$j-1] . "<br />"; 
 							if ($variance_combinations[$l][$j] >= ($variance + $variance_combinations[$i4][$j-1])) {
-								echo "bigger <br/>";
 								$lower_class_limits[$l][$j] = $lower_class_limit;
 								$variance_combinations[$l][$j] = $variance + $variance_combinations[$i4][$j-1];
 							}
 						}
 					}
 				}
-
+				
 				$lower_class_limits[$l][1] = 1;
             	$variance_combinations[$l][1] = $variance;
 			}
+
 			return array(
 				"lower_class_limits"=>$lower_class_limits,
 				"variance_combinations"=>$variance_combinations
@@ -290,22 +283,13 @@
 
 		// get our basic matrices
     	$matrices = getMatrices($data, $n_classes);
-    	// echo "MATRICES <br />";
-    	// print_r($matrices["lower_class_limits"]);
-     //    echo "<br />";
 
         // we only need lower class limits here
         $lower_class_limits = $matrices["lower_class_limits"];
-        // echo "lower_class_limits <br />";
-        // print_r($lower_class_limits);
- 
-    	// extract n_classes out of the computed matrices
-    	//echo "BREAKS <br />";
-    	print_r(breaks($data,$lower_class_limits,$n_classes));
-    	// return breaks($data, $lower_class_limits, $n_classes);
+        $breaks = breaks($data, $lower_class_limits, $n_classes);
+        ksort($breaks);
+    	return $breaks;
 	}
-
-	jenks(array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16),5);
 ?>
 <html>
 	<head>

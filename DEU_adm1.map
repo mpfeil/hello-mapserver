@@ -81,37 +81,46 @@ MAP
     TYPE POLYGON
     UNITS METERS
     CLASS
-      NAME "1 - 4.75"
-      EXPRESSION (([ID_1] >= 1) AND ([ID_1] <= 4.75))
+      NAME "1 - 4"
+      EXPRESSION (([ID_1] >= 1) AND ([ID_1] <= 4))
       STYLE
-        COLOR 255 139 135
+        COLOR 255 126 79
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "4.75 - 8.5"
-      EXPRESSION (([ID_1] > 4.75) AND ([ID_1] <= 8.5))
+      NAME "4 - 7"
+      EXPRESSION (([ID_1] > 4) AND ([ID_1] <= 7))
       STYLE
-        COLOR 191 114 175
+        COLOR 208 158 79
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "8.5 - 12.25"
-      EXPRESSION (([ID_1] > 8.5) AND ([ID_1] <= 12.25))
+      NAME "7 - 10"
+      EXPRESSION (([ID_1] > 7) AND ([ID_1] <= 10))
       STYLE
-        COLOR 128 89 215
+        COLOR 161 191 79
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "12.25 - 16"
-      EXPRESSION (([ID_1] > 12.25) AND ([ID_1] <= 16))
+      NAME "10 - 13"
+      EXPRESSION (([ID_1] > 10) AND ([ID_1] <= 13))
       STYLE
-        COLOR 64 64 255
+        COLOR 113 223 79
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "13 - 16"
+      EXPRESSION (([ID_1] > 13) AND ([ID_1] <= 16))
+      STYLE
+        COLOR 66 255 79
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
