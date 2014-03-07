@@ -1,4 +1,5 @@
 <?php
+
 	$map = new mapObj("/var/www/2213/chapter02/DEU_adm1.map");
 	$layer = $map->getLayerByName('DEU_adm1');
 	$layers = $map->getAllLayerNames();
@@ -28,6 +29,9 @@
 				equalInterval($map,$layer,$field,$startColor,$endColor,$classes);
 			} else if ($_POST["mode"] == "naturalBreaks") {
 				$test = jenks(array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16),8);
+			} else if ($_POST["mode"] == "quantile") {
+				$test2 = quantile(array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16),4);
+				print_r($test2);
 			}
 		}
 		
@@ -289,6 +293,39 @@
         ksort($breaks);
     	return $breaks;
 	}
+
+	function quantile($data, $classes) {
+	/*	Original python code:
+		values.sort()
+		n = len(values)
+		breaks = []
+		for i in range(classes):
+			q = i / float(classes)
+		    a = q * n
+		    aa = int(q * n)
+		    r = a - aa
+		    Xq = (1 - r) * values[aa] + r * values[aa+1]
+		    breaks.append(Xq)
+		breaks.append(values[n-1])
+		return breaks*/
+
+		sort($data);
+		$n = count($data);
+		$breaks = array();
+
+		foreach(range(0,$classes-1) as $i) {
+			$q = $i / (float)$classes;
+			$a = $q * $n;
+			$aa = (int)$q * $n;
+			$r = $a - $aa;
+			$Xq = (1 - $r) * $data[$aa] + $r * $data[$aa+1];
+			array_push($breaks, $Xq);
+		}
+		array_push($breaks, $data[$n-1]);
+
+		return $breaks;
+
+	}
 ?>
 <html>
 	<head>
@@ -305,7 +342,7 @@
 					}	
 				?>
 			</select>
-			<input type="submit" name="submitLayers">
+			<!-- <input type="submit" name="submitLayers"> -->
 		</form>
 		<hr>
 		<h1>Style</h1>
