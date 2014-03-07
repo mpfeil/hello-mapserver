@@ -1,5 +1,4 @@
 <?php
-
 	$map = new mapObj("/var/www/2213/chapter02/DEU_adm1.map");
 	$layer = $map->getLayerByName('DEU_adm1');
 	$layers = $map->getAllLayerNames();
@@ -82,8 +81,8 @@
 		$status = $layer->whichShapes($map->extent);	
 		while ($shape = $layer->nextShape())
 		{
-			print_r($shape->values);
-			echo "<br />";
+			// print_r($shape->values);
+			// echo "<br />";
 			if (!in_array($shape->values[$field], $resultArray)) {
 				array_push($resultArray, $shape->values[$field]);
 			}
@@ -306,59 +305,64 @@
 					}	
 				?>
 			</select>
-			<select name="test">
-				<?php 
-					$layer = $map->getLayerByName('DEU_adm1');
-					$status = $layer->open();
-
-					//read all attributes of layer
-					$attributes = $layer->getItems();
-
-					//iterate over layer attribtues	
-					foreach ($attributes as $key => $value) {
-						$isNumeric = false;
-						//get shapes from layer and look up attribute values
-						$status = $layer->whichShapes($map->extent);
-						while ($shape = $layer->nextShape())
-						{
-							if (is_numeric($shape->values["$value"])) {
-								$isNumeric = true;
-							} else {
-								$isNumeric = false;
-								break 1;
-							}
-						}
-						if ($isNumeric) {
-							echo "<option value='$value'>" . $value . "</option>";
-						}
-					}
-				?>
-			</select>
 			<input type="submit" name="submitLayers">
 		</form>
 		<hr>
 		<h1>Style</h1>
 		<form name="style" action="hello.php" method="POST">
-			<select name="styles">
-				<option value="singleSymbol">Single Symbol</option>
-				<option value="categorizedSymbol">Categorized Symbol</option>
-				<option value="graduatedSymbol">Graduated Symbol</option>	
+			<select name="styles" onchange="document.style.submit();">
+				<option <?php if ($_POST["styles"] == "singleSymbol") {
+					echo 'selected="selected"';
+				}  ?> value="singleSymbol">Single Symbol</option>
+				<option <?php if ($_POST["styles"] == "categorizedSymbol") {
+					echo 'selected="selected"';
+				}  ?>  value="categorizedSymbol">Categorized Symbol</option>
+				<option <?php if ($_POST["styles"] == "graduatedSymbol") {
+					echo 'selected="selected"';
+				}  ?>  value="graduatedSymbol">Graduated Symbol</option>	
 			</select>
 			<br />
 			<select name="field">
 				<?php
-					if (isset($_POST['submitLayers'])) {	
-						$layer = $map->getLayerByName("DEU_adm1");
+					$layer = $map->getLayerByName("DEU_adm1");
 
-						//open layer to work with it
-						$status = $layer->open();
+					//open layer to work with it
+					$status = $layer->open();
 
-						//read all attributes of layer
-						$attributes = $layer->getItems();
+					//read all attributes of layer
+					$attributes = $layer->getItems();
+
+					if (isset($_POST['styles'])) {
 						
+						$style = $_POST["styles"];	
+						
+						if ($style == "graduatedSymbol") {
+							foreach ($attributes as $key => $value) {
+								$isNumeric = false;
+								//get shapes from layer and look up attribute values
+								$status = $layer->whichShapes($map->extent);
+								while ($shape = $layer->nextShape())
+								{
+									if (is_numeric($shape->values["$value"])) {
+										$isNumeric = true;
+									} else {
+										$isNumeric = false;
+										break 1;
+									}
+								}
+								if ($isNumeric) {
+									echo "<option value='$value'>" . $value . "</option>";
+								}
+							}	
+						} else {
+							foreach ($attributes as $key => $value) {
+								echo "<option value='$value'>". $value . "</option>";
+							}	
+						}
+					} else {
 						foreach ($attributes as $key => $value) {
 							echo "<option value='$value'>". $value . "</option>";
-						}
+						}	
 					}
 				?>
 			</select>
