@@ -1,5 +1,4 @@
 <?php
-
 	$map = new mapObj("/var/www/2213/chapter02/DEU_adm1.map");
 	$layer = $map->getLayerByName('DEU_adm1');
 	$layers = $map->getAllLayerNames();
@@ -28,15 +27,30 @@
 			if ($_POST["mode"] == "equalInterval") {
 				equalInterval($map,$layer,$field,$startColor,$endColor,$classes);
 			} else if ($_POST["mode"] == "naturalBreaks") {
-				$test = jenks(array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16),8);
+				$data = getNumOfFeatures($map,$layer,$field);
+				$test = jenks($data,$classes);
+				print_r($test);
 			} else if ($_POST["mode"] == "quantile") {
-				$test2 = quantile(array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16),4);
+				$data = getNumOfFeatures($map,$layer,$field);
+				$test2 = quantile($data,$classes);
 				print_r($test2);
 			}
 		}
 		
 		$image=$map->draw();
     	$image_url=$image->saveWebImage();
+	}
+
+	function saveToMapFile($map,$layer,$field,$breaks,$colors) {
+		//remove old classes for layer $layer
+		while ($layer->numclasses > 0) {
+		    $layer->removeClass(0);
+		}
+		
+		//TODO: generate classes
+
+		//save map
+		$map->save($map->mappath . "DEU_adm1.map");	
 	}
 
 	//Generates an array of colors for a colorramp and a number of features
