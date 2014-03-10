@@ -81,80 +81,35 @@ MAP
     TYPE POLYGON
     UNITS METERS
     CLASS
-      NAME "1 - 1"
-      EXPRESSION (([ID_1] >= 1) AND ([ID_1] <= 1))
+      NAME "1 - 6"
+      EXPRESSION (([ID_1] >= 1) AND ([ID_1] <= 6))
       STYLE
-        COLOR 255 255 105
+        COLOR 31 255 46
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "1 - 3"
-      EXPRESSION (([ID_1] > 1) AND ([ID_1] <= 3))
+      NAME "6 - 11"
+      EXPRESSION (([ID_1] > 6) AND ([ID_1] <= 11))
       STYLE
-        COLOR 255 226 119
+        COLOR 37 178 116
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "3 - 5"
-      EXPRESSION (([ID_1] > 3) AND ([ID_1] <= 5))
+      NAME "11 - 16"
+      EXPRESSION (([ID_1] > 11) AND ([ID_1] <= 16))
       STYLE
-        COLOR 255 196 133
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "5 - 7"
-      EXPRESSION (([ID_1] > 5) AND ([ID_1] <= 7))
-      STYLE
-        COLOR 255 167 147
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "7 - 9"
-      EXPRESSION (([ID_1] > 7) AND ([ID_1] <= 9))
-      STYLE
-        COLOR 255 138 161
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "9 - 11"
-      EXPRESSION (([ID_1] > 9) AND ([ID_1] <= 11))
-      STYLE
-        COLOR 255 108 174
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "11 - 13"
-      EXPRESSION (([ID_1] > 11) AND ([ID_1] <= 13))
-      STYLE
-        COLOR 255 79 188
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "13 - 16"
-      EXPRESSION (([ID_1] > 13) AND ([ID_1] <= 16))
-      STYLE
-        COLOR 255 49 202
+        COLOR 42 102 185
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
       STYLE
-        COLOR 255 20 216
+        COLOR 48 25 255
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE

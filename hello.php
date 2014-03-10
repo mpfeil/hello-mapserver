@@ -25,7 +25,8 @@
 			saveToMapFile($map,$layer,$field,$style,$featuresInLayer,$colors);
 		} else if ($style == "graduatedSymbol") {
 			if ($_POST["mode"] == "equalInterval") {
-				$breaks = equalInterval($map,$layer,$field,$classes);
+				$data = getNumOfFeatures($map,$layer,$field);
+				$breaks = equalInterval($data,$classes);
 				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
 				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
 			} else if ($_POST["mode"] == "naturalBreaks") {
@@ -133,32 +134,13 @@
 	   return $rgb; // returns an array with the rgb values
 	}
 
-	//generates equal interval symbols for $field of $layer with $classes
-	function equalInterval($map,$layer,$field,$classes) {
-		$min;
-		$max;
-		$range;
-
-		$status = $layer->open();
-		$status = $layer->whichShapes($map->extent);	
-		while ($shape = $layer->nextShape())
-		{
-			if (!$min && !$max) {
-				$min = $shape->values[$field];
-				$max = $shape->values[$field];
-			} else {
-				if ($shape->values[$field] < $min) {
-					$min = $shape->values[$field];
-				} else if ($shape->values[$field] > $max) {
-					$max = $shape->values[$field];
-				}
-			}
-		}
-		$layer->close();
-
+	//generates equal interval symbols for $field of $layer with $classes $map,$layer,$field,$classes
+	function equalInterval($data, $classes) {
+		$min = min($data);;
+		$max = max($data);
 		$range = ($max - $min) / $classes;
-
 		$resultArray = array();
+
 		array_push($resultArray, $min);
 		for ($i=0; $i < $classes; $i++) { 
 			$test = $resultArray[$i]+$range;
@@ -316,7 +298,6 @@
 		array_push($breaks, $data[$n-1]);
 
 		return $breaks;
-
 	}
 ?>
 <html>
