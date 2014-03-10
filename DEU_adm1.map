@@ -81,145 +81,80 @@ MAP
     TYPE POLYGON
     UNITS METERS
     CLASS
-      NAME "Baden-Württemberg"
-      EXPRESSION ('[NAME_1]' = 'Baden-Württemberg')
+      NAME "1 - 1"
+      EXPRESSION (([ID_1] >= 1) AND ([ID_1] <= 1))
       STYLE
-        COLOR 23 255 31
+        COLOR 255 255 105
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "Bayern"
-      EXPRESSION ('[NAME_1]' = 'Bayern')
+      NAME "1 - 3"
+      EXPRESSION (([ID_1] > 1) AND ([ID_1] <= 3))
       STYLE
-        COLOR 25 239 46
+        COLOR 255 226 119
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "Berlin"
-      EXPRESSION ('[NAME_1]' = 'Berlin')
+      NAME "3 - 5"
+      EXPRESSION (([ID_1] > 3) AND ([ID_1] <= 5))
       STYLE
-        COLOR 27 224 61
+        COLOR 255 196 133
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "Brandenburg"
-      EXPRESSION ('[NAME_1]' = 'Brandenburg')
+      NAME "5 - 7"
+      EXPRESSION (([ID_1] > 5) AND ([ID_1] <= 7))
       STYLE
-        COLOR 29 208 76
+        COLOR 255 167 147
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "Bremen"
-      EXPRESSION ('[NAME_1]' = 'Bremen')
+      NAME "7 - 9"
+      EXPRESSION (([ID_1] > 7) AND ([ID_1] <= 9))
       STYLE
-        COLOR 31 192 91
+        COLOR 255 138 161
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "Hamburg"
-      EXPRESSION ('[NAME_1]' = 'Hamburg')
+      NAME "9 - 11"
+      EXPRESSION (([ID_1] > 9) AND ([ID_1] <= 11))
       STYLE
-        COLOR 33 177 106
+        COLOR 255 108 174
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "Hessen"
-      EXPRESSION ('[NAME_1]' = 'Hessen')
+      NAME "11 - 13"
+      EXPRESSION (([ID_1] > 11) AND ([ID_1] <= 13))
       STYLE
-        COLOR 35 161 121
+        COLOR 255 79 188
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "Mecklenburg-Vorpommern"
-      EXPRESSION ('[NAME_1]' = 'Mecklenburg-Vorpommern')
+      NAME "13 - 16"
+      EXPRESSION (([ID_1] > 13) AND ([ID_1] <= 16))
       STYLE
-        COLOR 37 145 136
+        COLOR 255 49 202
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "Niedersachsen"
-      EXPRESSION ('[NAME_1]' = 'Niedersachsen')
       STYLE
-        COLOR 38 130 150
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "Nordrhein-Westfalen"
-      EXPRESSION ('[NAME_1]' = 'Nordrhein-Westfalen')
-      STYLE
-        COLOR 40 114 165
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "Rheinland-Pfalz"
-      EXPRESSION ('[NAME_1]' = 'Rheinland-Pfalz')
-      STYLE
-        COLOR 42 98 180
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "Saarland"
-      EXPRESSION ('[NAME_1]' = 'Saarland')
-      STYLE
-        COLOR 44 83 195
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "Sachsen-Anhalt"
-      EXPRESSION ('[NAME_1]' = 'Sachsen-Anhalt')
-      STYLE
-        COLOR 46 67 210
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "Sachsen"
-      EXPRESSION ('[NAME_1]' = 'Sachsen')
-      STYLE
-        COLOR 48 51 225
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "Schleswig-Holstein"
-      EXPRESSION ('[NAME_1]' = 'Schleswig-Holstein')
-      STYLE
-        COLOR 50 36 240
-        OUTLINECOLOR 0 0 0
-        WIDTH 0.26
-      END # STYLE
-    END # CLASS
-    CLASS
-      NAME "Thüringen"
-      EXPRESSION ('[NAME_1]' = 'Thüringen')
-      STYLE
-        COLOR 52 20 255
+        COLOR 255 20 216
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE

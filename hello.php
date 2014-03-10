@@ -30,12 +30,14 @@
 				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
 			} else if ($_POST["mode"] == "naturalBreaks") {
 				$data = getNumOfFeatures($map,$layer,$field);
-				$test = jenks($data,$classes);
-				print_r($test);
+				$breaks = jenks($data,$classes);
+				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
+				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
 			} else if ($_POST["mode"] == "quantile") {
 				$data = getNumOfFeatures($map,$layer,$field);
-				$test2 = quantile($data,$classes);
-				print_r($test2);
+				$breaks = quantile($data,$classes);
+				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
+				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
 			}
 		}
 		
@@ -131,7 +133,7 @@
 	   return $rgb; // returns an array with the rgb values
 	}
 
-	//generates equal interval symbols for $field of $layer with $classes, ,$startColor,$endColor,$classes
+	//generates equal interval symbols for $field of $layer with $classes
 	function equalInterval($map,$layer,$field,$classes) {
 		$min;
 		$max;
@@ -394,7 +396,7 @@
 				?>
 			</select>
 			<br />
-			<select name="mode">
+			<select <?php if ($_POST["styles"] != "graduatedSymbol") {echo 'hidden';} ?> name="mode">
 				<option value="equalInterval">Equal Interval</option>
 				<option value="quantile">Quantile (Equal Count)</option>
 				<option value="naturalBreaks">Natural Breaks (Jenks)</option>
@@ -402,7 +404,7 @@
 				<option value="prettyBreaks">Pretty Breaks</option>	
 			</select>
 			<br />
-			<input type="number" min="0" max="20" step="1" value="5" name="classes"/>
+			<input <?php if ($_POST["styles"] != "graduatedSymbol") {echo 'hidden';} ?> type="number" min="0" max="20" step="1" value="5" name="classes"/>
 			<br />
 			<input name="startColor" class="color"> - <input name="endColor" class="color">
 			<input type="submit" name="submitStyle">
