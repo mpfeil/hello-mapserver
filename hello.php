@@ -22,10 +22,12 @@
 		} else if ($style == "categorizedSymbol") {
 			$featuresInLayer = getNumOfFeatures($map,$layer,$field);
 			$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($featuresInLayer));
-			generateCategorizedStyle($map,$layer,$field,$featuresInLayer,$colors);
+			saveToMapFile($map,$layer,$field,$style,$featuresInLayer,$colors);
 		} else if ($style == "graduatedSymbol") {
 			if ($_POST["mode"] == "equalInterval") {
-				equalInterval($map,$layer,$field,$startColor,$endColor,$classes);
+				$breaks = equalInterval($map,$layer,$field,$classes);
+				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
+				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
 			} else if ($_POST["mode"] == "naturalBreaks") {
 				$data = getNumOfFeatures($map,$layer,$field);
 				$test = jenks($data,$classes);
@@ -41,13 +43,38 @@
     	$image_url=$image->saveWebImage();
 	}
 
-	function saveToMapFile($map,$layer,$field,$breaks,$colors) {
+	function saveToMapFile($map,$layer,$field,$style,$breaks,$colors) {
+		$symbol = $style;
 		//remove old classes for layer $layer
 		while ($layer->numclasses > 0) {
 		    $layer->removeClass(0);
 		}
 		
-		//TODO: generate classes
+		//create classObject (set Name(Layername), set Expression(filter for different styling))
+		for ($i=0; $i < count($breaks); $i++) {
+			$class = new classObj($layer);
+			
+			if ($symbol == "categorizedSymbol") {
+				$class->set("name",$breaks[$i]);
+				$class->setExpression("('[$field]' = '$breaks[$i]')");	
+			} else {
+				$j= $i+1;
+				//check if it is the starting class
+				if ($i == 0) {
+					$class->set("name", $breaks[$i] . " - " . $breaks[$j]);
+					$class->setExpression("(([$field] >= $breaks[$i]) AND ([$field] <= $breaks[$j]))");	
+				} else if ($i < count($breaks)-1) {
+					$class->set("name", $breaks[$i] . " - " . $breaks[$j]);
+					$class->setExpression("(([$field] > $breaks[$i]) AND ([$field] <= $breaks[$j]))");
+				}	
+			}
+
+			//create styleObject
+			$style = new styleObj($class);
+			$style->color->setRGB($colors[$i][0],$colors[$i][1],$colors[$i][2]);
+			$style->outlinecolor->setRGB(0,0,0);
+			$style->width = 0.26;
+		}
 
 		//save map
 		$map->save($map->mappath . "DEU_adm1.map");	
@@ -70,28 +97,6 @@
 		return $resultArray;	
 	}
 
-	function generateCategorizedStyle($map,$layer,$field,$featuresInLayer,$colors) {
-		//remove all classes for layer
-		while ($layer->numclasses > 0) {
-		    $layer->removeClass(0);
-		}
-
-		//create classObject (set Name(Layername), set Expression(filter for different styling))
-		for ($i=0; $i < count($featuresInLayer); $i++) {
-			$class = new classObj($layer);
-			$class->set("name",$featuresInLayer[$i]);
-			$class->setExpression("('[$field]' = '$featuresInLayer[$i]')");
-			
-			//create styleObject
-			$style = new styleObj($class);
-			$style->color->setRGB($colors[$i][0],$colors[$i][1],$colors[$i][2]);
-			$style->outlinecolor->setRGB(0,0,0);
-			$style->width = 0.26;
-		}
-		//save map
-		$map->save($map->mappath . "DEU_adm1.map");
-	}
-
 	function getNumOfFeatures($map,$layer,$field) {
 		$resultArray = array();
 
@@ -99,8 +104,6 @@
 		$status = $layer->whichShapes($map->extent);	
 		while ($shape = $layer->nextShape())
 		{
-			// print_r($shape->values);
-			// echo "<br />";
 			if (!in_array($shape->values[$field], $resultArray)) {
 				array_push($resultArray, $shape->values[$field]);
 			}
@@ -128,8 +131,8 @@
 	   return $rgb; // returns an array with the rgb values
 	}
 
-	//generates equal interval symbols for $field of $layer with $classes
-	function equalInterval($map,$layer,$field,$startColor,$endColor,$classes) {
+	//generates equal interval symbols for $field of $layer with $classes, ,$startColor,$endColor,$classes
+	function equalInterval($map,$layer,$field,$classes) {
 		$min;
 		$max;
 		$range;
@@ -153,41 +156,14 @@
 
 		$range = ($max - $min) / $classes;
 
-		//get Color for amount of classes
-		$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),$classes);
-
-		//remove all classes for layer
-		while ($layer->numclasses > 0) {
-		    $layer->removeClass(0);
+		$resultArray = array();
+		array_push($resultArray, $min);
+		for ($i=0; $i < $classes; $i++) { 
+			$test = $resultArray[$i]+$range;
+			array_push($resultArray, $test);
 		}
-
-		$tempMin = $min;
-
-		//create classObject (set Name(Layername), set Expression(filter for different styling))
-		for ($i=0; $i < $classes; $i++) {
-			$rangeStart = $min ;
-			$rangeEnd = $min + $range ;
-			$class = new classObj($layer);
-			$class->set("name", $rangeStart . " - " . $rangeEnd);
-
-			//check if it is the starting class
-			if ($rangeStart == $tempMin) {
-				$class->setExpression("(([$field] >= $rangeStart) AND ([$field] <= $rangeEnd))");	
-			} else {
-				$class->setExpression("(([$field] > $rangeStart) AND ([$field] <= $rangeEnd))");
-			}
-			
-			//create styleObject
-			$style = new styleObj($class);
-			$style->color->setRGB($colors[$i][0],$colors[$i][1],$colors[$i][2]);
-			$style->outlinecolor->setRGB(0,0,0);
-			$style->width = 0.26;
-
-			$min += $range;
-		}
-
-		//save map
-		$map->save($map->mappath . "DEU_adm1.map");
+		
+		return $resultArray;
 	}
 
 	function jenks($data, $n_classes) {

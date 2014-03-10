@@ -84,7 +84,7 @@ MAP
       NAME "Baden-Württemberg"
       EXPRESSION ('[NAME_1]' = 'Baden-Württemberg')
       STYLE
-        COLOR 227 255 46
+        COLOR 23 255 31
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -93,7 +93,7 @@ MAP
       NAME "Bayern"
       EXPRESSION ('[NAME_1]' = 'Bayern')
       STYLE
-        COLOR 215 240 60
+        COLOR 25 239 46
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -102,7 +102,7 @@ MAP
       NAME "Berlin"
       EXPRESSION ('[NAME_1]' = 'Berlin')
       STYLE
-        COLOR 202 225 74
+        COLOR 27 224 61
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -111,7 +111,7 @@ MAP
       NAME "Brandenburg"
       EXPRESSION ('[NAME_1]' = 'Brandenburg')
       STYLE
-        COLOR 190 210 88
+        COLOR 29 208 76
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -120,7 +120,7 @@ MAP
       NAME "Bremen"
       EXPRESSION ('[NAME_1]' = 'Bremen')
       STYLE
-        COLOR 178 194 102
+        COLOR 31 192 91
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -129,7 +129,7 @@ MAP
       NAME "Hamburg"
       EXPRESSION ('[NAME_1]' = 'Hamburg')
       STYLE
-        COLOR 166 179 116
+        COLOR 33 177 106
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -138,7 +138,7 @@ MAP
       NAME "Hessen"
       EXPRESSION ('[NAME_1]' = 'Hessen')
       STYLE
-        COLOR 153 164 130
+        COLOR 35 161 121
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -147,7 +147,7 @@ MAP
       NAME "Mecklenburg-Vorpommern"
       EXPRESSION ('[NAME_1]' = 'Mecklenburg-Vorpommern')
       STYLE
-        COLOR 141 149 144
+        COLOR 37 145 136
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -156,7 +156,7 @@ MAP
       NAME "Niedersachsen"
       EXPRESSION ('[NAME_1]' = 'Niedersachsen')
       STYLE
-        COLOR 129 134 157
+        COLOR 38 130 150
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -165,7 +165,7 @@ MAP
       NAME "Nordrhein-Westfalen"
       EXPRESSION ('[NAME_1]' = 'Nordrhein-Westfalen')
       STYLE
-        COLOR 117 119 171
+        COLOR 40 114 165
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -174,7 +174,7 @@ MAP
       NAME "Rheinland-Pfalz"
       EXPRESSION ('[NAME_1]' = 'Rheinland-Pfalz')
       STYLE
-        COLOR 104 104 185
+        COLOR 42 98 180
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -183,7 +183,7 @@ MAP
       NAME "Saarland"
       EXPRESSION ('[NAME_1]' = 'Saarland')
       STYLE
-        COLOR 92 89 199
+        COLOR 44 83 195
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -192,7 +192,7 @@ MAP
       NAME "Sachsen-Anhalt"
       EXPRESSION ('[NAME_1]' = 'Sachsen-Anhalt')
       STYLE
-        COLOR 80 73 213
+        COLOR 46 67 210
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -201,7 +201,7 @@ MAP
       NAME "Sachsen"
       EXPRESSION ('[NAME_1]' = 'Sachsen')
       STYLE
-        COLOR 68 58 227
+        COLOR 48 51 225
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -210,7 +210,7 @@ MAP
       NAME "Schleswig-Holstein"
       EXPRESSION ('[NAME_1]' = 'Schleswig-Holstein')
       STYLE
-        COLOR 55 43 241
+        COLOR 50 36 240
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
@@ -219,7 +219,7 @@ MAP
       NAME "Thüringen"
       EXPRESSION ('[NAME_1]' = 'Thüringen')
       STYLE
-        COLOR 43 28 255
+        COLOR 52 20 255
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
