@@ -39,6 +39,11 @@
 				$breaks = quantile($data,$classes);
 				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
 				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
+			} else if ($_POST["mode"] == "standardDeviation") {
+				$data = getNumOfFeatures($map,$layer,$field);
+				$breaks = standardDeviation($data,$classes);
+				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
+				saveToMapFile($map,$layer,$field,$style,$breaks,$color);
 			}
 		}
 		
@@ -269,20 +274,6 @@
 	}
 
 	function quantile($data, $classes) {
-	/*	Original python code:
-		values.sort()
-		n = len(values)
-		breaks = []
-		for i in range(classes):
-			q = i / float(classes)
-		    a = q * n
-		    aa = int(q * n)
-		    r = a - aa
-		    Xq = (1 - r) * values[aa] + r * values[aa+1]
-		    breaks.append(Xq)
-		breaks.append(values[n-1])
-		return breaks*/
-
 		sort($data);
 		$n = count($data);
 		$breaks = array();
@@ -298,6 +289,128 @@
 		array_push($breaks, $data[$n-1]);
 
 		return $breaks;
+	}
+
+	function standardDeviation($data,$classes) {
+		$mean = 0.0;
+		$sd2 = 0.0;
+		$n = count($data);
+		$min = min($data);
+		$max = max($data);
+		for ($i=0; $i < $n; $i++) { 
+			$mean = $mean + $data[$i];
+		}
+		$mean = $mean / $n;
+		for ($i=0; $i < $n; $i++) {
+			$sd = $data[$i] - $mean;
+			$sd2 += $sd * $sd;
+		}
+		$sd2 = sqrt($sd2 / $n);
+		$res = rpretty(($min-$mean)/$sd2, ($max-$mean)/$sd2, $classes);
+		$res2 = array();
+		foreach ($res as $val) {
+			$tempVal = ($val*$sd2)+$mean;
+			array_push($res2, $tempVal);
+		}
+		return $res2;
+	}
+
+	function rpretty($dmin, $dmax, $n) {
+		$resultArray = array();
+		$min_n = (int)($n / 3);
+		$shrink_sml = 0.75;
+		$high_u_bias = 1.5;
+		$u5_bias = 0.5 + 1.5 * $high_u_bias;
+		$h = $high_u_bias;
+		$h5 = $u5_bias;
+		$ndiv = $n;
+
+		$dx = $dmax - $dmin;
+		if ($dx == 0 && $dmax == 0) {
+			$cell = 1.0;
+			$i_small = True;
+			$U = 1;
+		} else {
+			$cell = max(abs($dmin),abs($dmax));
+			if ($h5 >= 1.5 * $h + 0.5) {
+				$U = 1 + (1.0/(1+$h));
+			} else {
+				$U = 1 + (1.5 / (1 + $h5));
+    			$i_small = $dx < ($cell * $U * max(1.0, $ndiv) * 1e-07 * 3.0);
+			}
+		}
+
+		if ($i_small) {
+			if ($cell > 10) {
+				$cell = 9 + $cell / 10;
+      			$cell = $cell * $shrink_sml;	
+			}
+			if ($min_n > 1) {
+				$cell = $cell / $min_n;
+			}
+		} else {
+			$cell = $dx;
+			if ($ndiv > 1) {
+				$cell = $cell / $ndiv;
+			}
+		}
+
+		if ($cell < 20 * 1e-07) {
+			$cell = 20 * 1e-07;
+		}
+
+		$base = pow(10.0, floor(log10($cell))); 
+		$unit = $base;
+		if ((2 * $base) - $cell < $h * ($cell - $unit)) {
+			$unit = 2.0 * $base;
+			if ((5 * $base) - $cell < $h5 * ($cell - $unit)) {
+				$unit = 5.0 * $base;
+				if ((10 * $base) - $cell < $h * ($cell - $unit)) {
+					$unit = 10.0 * $base;
+				}
+			}
+		}
+
+		$ns = floor($dmin / $unit + 1e-07);
+		$nu = ceil($dmax / $unit - 1e-07);
+
+		while ($ns * $unit > $dmin + (1e-07 * $unit)) {
+			$ns = $ns - 1;
+		}
+		while ($nu * $unit < $dmax - (1e-07 * $unit)) {
+			$nu = $nu + 1;
+		}
+
+		$k = floor(0.5 + $nu-$ns);
+		if ($k < $min_n) {
+			$k = $min_n - $k;
+			if ($ns >= 0) {
+				$nu = $nu + $k / 2;
+				$ns = $ns - $k / 2 + $k % 2;
+			} else {
+				$ns = $ns - $k / 2;
+		      	$nu = $nu + $k / 2 + $k % 2	;
+			}
+		} else {
+			$ndiv = $k;
+		}
+
+		$graphmin = $ns * $unit;
+		$graphmax = $nu * $unit;
+
+		$count = (int)(ceil($graphmax - $graphmin))/$unit;
+		foreach(range(0,$count) as $i) {
+			$tempVal = $graphmin + $i * $unit;
+			array_push($resultArray, $tempVal);
+		}
+
+		if ($resultArray[0] < $dmin) {
+			$resultArray[0] = $dmin;
+		}
+		if ($resultArray[count($resultArray)-1] > $dmax) {
+			$resultArray[count($resultArray)-1] = $dmax;
+		}
+		return $resultArray;
 	}
 ?>
 <html>
