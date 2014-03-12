@@ -44,6 +44,11 @@
 				$breaks = standardDeviation($data,$classes);
 				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
 				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
+			} else if ($_POST["mode"] == "prettyBreaks") {
+				$data = getNumOfFeatures($map,$layer,$field);
+				$breaks = pretty($data,$classes);
+				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
+				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
 			}
 		}
 		
@@ -411,6 +416,13 @@
 			$resultArray[count($resultArray)-1] = $dmax;
 		}
 		return $resultArray;
+	}
+
+	function pretty($data,$classes) {
+		$min = min($data);
+		$max = max($data);
+		
+		return rpretty($min,$max,$classes);	
 	}
 ?>
 <html>
