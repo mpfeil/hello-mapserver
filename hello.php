@@ -52,8 +52,10 @@
 			}
 		}
 		
-		$image=$map->draw();
-    	$image_url=$image->saveWebImage();
+		$image = $map->draw();
+    	$image_url = $image->saveWebImage();
+    	$legend = $map->drawLegend();
+    	$legend_url = $legend->saveWebImage(); 
 	}
 
 	function saveToMapFile($map,$layer,$field,$style,$breaks,$colors) {
@@ -516,7 +518,11 @@
 			<input type="submit" name="submitStyle">
 		</form>
 		<hr>
-			<IMG SRC=<?php echo $image_url; ?> >
-		<hr>
+		<div style="float:left;width:600px;">
+			<IMG SRC=<?php echo $image_url; ?> >	
+		</div>
+		<div style="float:left;margin:50px 50px;">
+			<IMG SRC=<?php echo $legend_url; ?> >	
+		</div>
 	</body>
 </html>
