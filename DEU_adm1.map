@@ -81,53 +81,80 @@ MAP
     TYPE POLYGON
     UNITS METERS
     CLASS
-      NAME "1 - 4"
-      EXPRESSION (([ID_1] >= 1) AND ([ID_1] <= 4))
+      NAME "1 - 1.5853416570303"
+      EXPRESSION (([ID_1] >= 1) AND ([ID_1] <= 1.5853416570303))
       STYLE
-        COLOR 255 255 255
+        COLOR 89 255 28
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "4 - 7"
-      EXPRESSION (([ID_1] > 4) AND ([ID_1] <= 7))
+      NAME "1.5853416570303 - 3.8902277713536"
+      EXPRESSION (([ID_1] > 1.5853416570303) AND ([ID_1] <= 3.8902277713536))
       STYLE
-        COLOR 255 255 255
+        COLOR 81 226 56
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "7 - 10"
-      EXPRESSION (([ID_1] > 7) AND ([ID_1] <= 10))
+      NAME "3.8902277713536 - 6.1951138856768"
+      EXPRESSION (([ID_1] > 3.8902277713536) AND ([ID_1] <= 6.1951138856768))
       STYLE
-        COLOR 255 255 255
+        COLOR 74 196 85
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "10 - 13"
-      EXPRESSION (([ID_1] > 10) AND ([ID_1] <= 13))
+      NAME "6.1951138856768 - 8.5"
+      EXPRESSION (([ID_1] > 6.1951138856768) AND ([ID_1] <= 8.5))
       STYLE
-        COLOR 255 255 255
+        COLOR 66 167 113
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
-      NAME "13 - 16"
-      EXPRESSION (([ID_1] > 13) AND ([ID_1] <= 16))
+      NAME "8.5 - 10.804886114323"
+      EXPRESSION (([ID_1] > 8.5) AND ([ID_1] <= 10.804886114323))
       STYLE
-        COLOR 255 255 255
+        COLOR 59 138 142
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "10.804886114323 - 13.109772228646"
+      EXPRESSION (([ID_1] > 10.804886114323) AND ([ID_1] <= 13.109772228646))
+      STYLE
+        COLOR 51 108 170
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "13.109772228646 - 15.41465834297"
+      EXPRESSION (([ID_1] > 13.109772228646) AND ([ID_1] <= 15.41465834297))
+      STYLE
+        COLOR 43 79 198
+        OUTLINECOLOR 0 0 0
+        WIDTH 0.26
+      END # STYLE
+    END # CLASS
+    CLASS
+      NAME "15.41465834297 - 16"
+      EXPRESSION (([ID_1] > 15.41465834297) AND ([ID_1] <= 16))
+      STYLE
+        COLOR 36 49 227
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE
     END # CLASS
     CLASS
       STYLE
-        COLOR 255 255 255
+        COLOR 28 20 255
         OUTLINECOLOR 0 0 0
         WIDTH 0.26
       END # STYLE

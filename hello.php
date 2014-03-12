@@ -43,7 +43,7 @@
 				$data = getNumOfFeatures($map,$layer,$field);
 				$breaks = standardDeviation($data,$classes);
 				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
-				saveToMapFile($map,$layer,$field,$style,$breaks,$color);
+				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
 			}
 		}
 		
