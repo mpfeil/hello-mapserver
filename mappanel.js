@@ -8,10 +8,10 @@
 
 Ext.require([
     'Ext.container.Viewport',
-    'Ext.state.Manager',
-    'Ext.state.CookieProvider',
-    'Ext.window.MessageBox',
-    'GeoExt.panel.Map'
+    'Ext.layout.container.Border',
+    'GeoExt.panel.Map',
+    'GeoExt.container.UrlLegend',
+    'GeoExt.panel.Legend'
 ]);
 
 Ext.application({
@@ -37,6 +37,9 @@ Ext.application({
         
         mappanel = Ext.create('GeoExt.panel.Map', {
             title: 'The GeoExt.panel.Map-class',
+            height: 400,
+            width: 600,
+            region: 'center',
             map: map,
             center: '12.3046875,51.48193359375',
             zoom: 6,
@@ -55,10 +58,30 @@ Ext.application({
             }]
         });
 
+        // give the record of the 1st layer a legendURL, which will cause
+        // UrlLegend instead of WMSLegend to be used
+        var layerRec0 = mappanel.layers.getAt(0);
+        layerRec0.set("legendURL", "http://localhost/cgi-bin/mapserv?map=/var/www/2213/chapter02/DEU_adm1.map&version=1.1.1&service=WMS&request=GetLegendGraphic&layer=DEU_adm1&format=image/png&STYLE=default");
+
+        legendPanel = Ext.create('GeoExt.panel.Legend', {
+            defaults: {
+                labelCls: 'mylabel',
+                style: 'padding:5px'
+            },
+            bodyStyle: 'padding:5px',
+            width: 350,
+            autoScroll: true,
+            region: 'east'
+        });
+
         Ext.create('Ext.container.Viewport', {
-            layout: 'fit',
+            layout: 'border',
+            renderTo: 'view',
+            width: 800,
+            height: 400,
             items: [
-                mappanel
+                mappanel,
+                legendPanel
             ]
         });
     }
