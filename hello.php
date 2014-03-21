@@ -55,7 +55,15 @@
 		$image = $map->draw();
     	$image_url = $image->saveWebImage();
     	$legend = $map->drawLegend();
-    	$legend_url = $legend->saveWebImage(); 
+    	$legend_url = $legend->saveWebImage();
+
+    	//generate SLD for GeoExt StyleStore
+    	$sld = $map->generateSLD(); 
+ 
+    	// save sld to a file
+		$fp = fopen("parcel-sld.xml", "a");
+		fputs( $fp, $sld );
+		fclose($fp);
 	}
 
 	function saveToMapFile($map,$layer,$field,$style,$breaks,$colors) {
