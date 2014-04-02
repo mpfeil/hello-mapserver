@@ -462,28 +462,6 @@
 		<script type="text/javascript" src="vendor/jscolor/jscolor.js"></script>
 	</head>
 	<body>
-		<!-- <h1>Mapfile</h1> -->
-		<!-- <form name="mapfile" action="hello.php" method="POST">
-			<input type="text" name="mapfileLocation">
-			<input type="submit" name="submitLayers" value="Get layers">
-		</form> -->
-		<!-- <h1>Layers</h1>
-		<form name="layers" action="hello.php" method="POST">
-			<select name="cbLayers" onchange="document.layers.submit();">
-				<?php
-					/*echo "<option value='null'>-- Select a layer --</option>";
-					if (isset($_POST["submitLayers"])) {
-						if (isset($_POST["mapfileLocation"]) != "") {
-							$map = new mapObj($_POST["mapfileLocation"]);
-							$layers = $map->getAllLayerNames();
-							foreach($layers as $layer) {
-								echo "<option value='$layer'>" . $layer . "</option>";
-							}
-						}
-					}*/
-				?>
-			</select>
-		</form> -->
 		<hr>
 		<form name="style" action="hello.php" method="POST">
 			<h1>Mapfile</h1>
@@ -524,9 +502,6 @@
 			<br />
 			<select name="field">
 				<?php
-					// $layer = $map->getLayerByName("DEU_adm1");
-					// $layer = $map->getLayerByName("ci08au12");
-					// $layer = $map->getLayerByName($_POST["cbLayers"]);
 					if ($_POST['cbLayers'] != "") {
 						echo "<script>console.log('layer selected')</script>";
 						$layerName = $_POST["cbLayers"];
@@ -537,15 +512,9 @@
 						// //read all attributes of layer
 						$attributes = $layer->getItems();
 					}
-					//open layer to work with it
-					// $status = $layer->open();
 
-					// //read all attributes of layer
-					// $attributes = $layer->getItems();
-					
-					// if (isset($_POST['styles'])) {
 					if ($layerName != "") {
-						echo "<script>console.log('inside')</script>";
+
 						$style = $_POST["styles"];	
 						
 						if ($style == "graduatedSymbol") {
