@@ -503,9 +503,9 @@
 			<select name="field">
 				<?php
 					if ($_POST['cbLayers'] != "") {
-						echo "<script>console.log('layer selected')</script>";
 						$layerName = $_POST["cbLayers"];
 						$layer = $map->getLayerByName("$layerName");
+						
 						//open layer to work with it
 						$status = $layer->open();
 
