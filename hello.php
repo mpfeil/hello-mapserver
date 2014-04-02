@@ -1,7 +1,22 @@
 <?php
-	$map = new mapObj("/var/www/2213/chapter02/DEU_adm1.map");
-	$layer = $map->getLayerByName('DEU_adm1');
-	$layers = $map->getAllLayerNames();
+	echo "/var/www/2213/chapter02/DEU_adm1.map <br/>";
+	echo "/var/www/2213/chapter02/points.map";
+
+	// //read all attributes of layer
+	// $attributes = $layer->getItems();
+	// $ogrinfo = array();
+	// exec('ogrinfo -q /home/matthias/Downloads/ci08au12.shp -sql "SELECT * FROM ci08au12" -fid 1',$ogrinfo);
+	// print_r($ogrinfo);
+
+	// $sym1 = $map->getsymbolobjectbyid(0);
+	// $sym2 = $map->getsymbolobjectbyid(1);
+	// $sym3 = $map->getsymbolobjectbyid(2);
+	// $sym4 = $map->getsymbolobjectbyid(3);
+
+	// echo $sym1->name . "....<br />";
+	// echo $sym2->name . "<br />";
+	// echo $sym3->name . "<br />";
+	// echo $sym4->name . "<br />";
 
 	if (isset($_POST["submitStyle"])) {
 		$style = $_POST["styles"];
@@ -17,6 +32,11 @@
 			$field = "NAME_1";
 		}
 
+		if ($_POST["mapfileLocation"] != "" && $_POST["cbLayers"] != "") {
+			$map = new mapObj($_POST["mapfileLocation"]);
+			$layer = $map->getLayerByName($_POST["cbLayers"]);
+		}
+		
 		if ($style == "singleSymbol") {
 			# code...
 		} else if ($style == "categorizedSymbol") {
@@ -100,7 +120,8 @@
 		}
 
 		//save map
-		$map->save($map->mappath . "DEU_adm1.map");	
+		$map->save($map->mappath . "DEU_adm1.map");
+		// $map->save($map->mappath . "points.map");	
 	}
 
 	//Generates an array of colors for a colorramp and a number of features
@@ -441,20 +462,54 @@
 		<script type="text/javascript" src="vendor/jscolor/jscolor.js"></script>
 	</head>
 	<body>
-		<h1>Layers</h1>
+		<!-- <h1>Mapfile</h1> -->
+		<!-- <form name="mapfile" action="hello.php" method="POST">
+			<input type="text" name="mapfileLocation">
+			<input type="submit" name="submitLayers" value="Get layers">
+		</form> -->
+		<!-- <h1>Layers</h1>
 		<form name="layers" action="hello.php" method="POST">
-			<select name="cbLayers">
-				<?php 
-					foreach($layers as $layer) {
-						echo "<option value='$layer'>" . $layer . "</option>";
-					}	
+			<select name="cbLayers" onchange="document.layers.submit();">
+				<?php
+					/*echo "<option value='null'>-- Select a layer --</option>";
+					if (isset($_POST["submitLayers"])) {
+						if (isset($_POST["mapfileLocation"]) != "") {
+							$map = new mapObj($_POST["mapfileLocation"]);
+							$layers = $map->getAllLayerNames();
+							foreach($layers as $layer) {
+								echo "<option value='$layer'>" . $layer . "</option>";
+							}
+						}
+					}*/
 				?>
 			</select>
-			<!-- <input type="submit" name="submitLayers"> -->
-		</form>
+		</form> -->
 		<hr>
-		<h1>Style</h1>
 		<form name="style" action="hello.php" method="POST">
+			<h1>Mapfile</h1>
+			<input type="text" name="mapfileLocation" <?php if ($_POST['mapfileLocation'] != '') {
+				echo "value=".$_POST['mapfileLocation'];
+			}?>>
+			<input type="submit" name="submitLayers" value="Get layers">
+			<h1>Layers</h1>
+			<select name="cbLayers" onchange="document.style.submit();">
+				<?php
+					echo "<option value='null'>-- Select a layer --</option>";
+					if (isset($_POST["mapfileLocation"]) != "") {
+						$map = new mapObj($_POST["mapfileLocation"]);
+						$layers = $map->getAllLayerNames();
+						foreach($layers as $layer) {
+							if ($_POST["cbLayers"] != "" && $_POST["cbLayers"] == $layer) {
+									echo "<option value='$layer' selected>" . $layer . "</option>";
+							} else {
+								echo "<option value='$layer'>" . $layer . "</option>";
+							}
+							
+						}
+					}
+				?>
+			</select>
+			<h1>Style</h1>
 			<select name="styles" onchange="document.style.submit();">
 				<option <?php if ($_POST["styles"] == "singleSymbol") {
 					echo 'selected="selected"';
@@ -469,16 +524,28 @@
 			<br />
 			<select name="field">
 				<?php
-					$layer = $map->getLayerByName("DEU_adm1");
+					// $layer = $map->getLayerByName("DEU_adm1");
+					// $layer = $map->getLayerByName("ci08au12");
+					// $layer = $map->getLayerByName($_POST["cbLayers"]);
+					if ($_POST['cbLayers'] != "") {
+						echo "<script>console.log('layer selected')</script>";
+						$layerName = $_POST["cbLayers"];
+						$layer = $map->getLayerByName("$layerName");
+						//open layer to work with it
+						$status = $layer->open();
 
+						// //read all attributes of layer
+						$attributes = $layer->getItems();
+					}
 					//open layer to work with it
-					$status = $layer->open();
+					// $status = $layer->open();
 
-					//read all attributes of layer
-					$attributes = $layer->getItems();
-
-					if (isset($_POST['styles'])) {
-						
+					// //read all attributes of layer
+					// $attributes = $layer->getItems();
+					
+					// if (isset($_POST['styles'])) {
+					if ($layerName != "") {
+						echo "<script>console.log('inside')</script>";
 						$style = $_POST["styles"];	
 						
 						if ($style == "graduatedSymbol") {
