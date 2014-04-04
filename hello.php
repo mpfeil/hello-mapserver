@@ -1,10 +1,7 @@
 <?php
 	echo "/var/www/2213/chapter02/DEU_adm1.map <br/>";
+	echo "/var/www/2213/chapter02/lines.map <br/>";
 	echo "/var/www/2213/chapter02/points.map";
-
-	// $test = new mapObj("/var/www/2213/chapter02/DEU_adm1.map");
-	// $testlyr = $test->getLayerByName("DEU_adm1");
-	// echo $testlyr->type;
 
 	// //read all attributes of layer
 	// $attributes = $layer->getItems();
