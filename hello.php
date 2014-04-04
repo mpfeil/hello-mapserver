@@ -2,6 +2,10 @@
 	echo "/var/www/2213/chapter02/DEU_adm1.map <br/>";
 	echo "/var/www/2213/chapter02/points.map";
 
+	// $test = new mapObj("/var/www/2213/chapter02/DEU_adm1.map");
+	// $testlyr = $test->getLayerByName("DEU_adm1");
+	// echo $testlyr->type;
+
 	// //read all attributes of layer
 	// $attributes = $layer->getItems();
 	// $ogrinfo = array();
@@ -35,6 +39,7 @@
 		if ($_POST["mapfileLocation"] != "" && $_POST["cbLayers"] != "") {
 			$map = new mapObj($_POST["mapfileLocation"]);
 			$layer = $map->getLayerByName($_POST["cbLayers"]);
+			$mapfile = $_POST["mapfileLocation"];
 		}
 		
 		if ($style == "singleSymbol") {
@@ -42,33 +47,33 @@
 		} else if ($style == "categorizedSymbol") {
 			$featuresInLayer = getNumOfFeatures($map,$layer,$field);
 			$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($featuresInLayer));
-			saveToMapFile($map,$layer,$field,$style,$featuresInLayer,$colors);
+			saveToMapFile($map,$layer,$field,$style,$featuresInLayer,$colors,$mapfile);
 		} else if ($style == "graduatedSymbol") {
 			if ($_POST["mode"] == "equalInterval") {
 				$data = getNumOfFeatures($map,$layer,$field);
 				$breaks = equalInterval($data,$classes);
 				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
-				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
+				saveToMapFile($map,$layer,$field,$style,$breaks,$colors,$mapfile);
 			} else if ($_POST["mode"] == "naturalBreaks") {
 				$data = getNumOfFeatures($map,$layer,$field);
 				$breaks = jenks($data,$classes);
 				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
-				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
+				saveToMapFile($map,$layer,$field,$style,$breaks,$colors,$mapfile);
 			} else if ($_POST["mode"] == "quantile") {
 				$data = getNumOfFeatures($map,$layer,$field);
 				$breaks = quantile($data,$classes);
 				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
-				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
+				saveToMapFile($map,$layer,$field,$style,$breaks,$colors,$mapfile);
 			} else if ($_POST["mode"] == "standardDeviation") {
 				$data = getNumOfFeatures($map,$layer,$field);
 				$breaks = standardDeviation($data,$classes);
 				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
-				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
+				saveToMapFile($map,$layer,$field,$style,$breaks,$colors,$mapfile);
 			} else if ($_POST["mode"] == "prettyBreaks") {
 				$data = getNumOfFeatures($map,$layer,$field);
 				$breaks = pretty($data,$classes);
 				$colors = getColors(array($startColor[0],$startColor[1],$startColor[2]),array($endColor[0],$endColor[1],$endColor[2]),count($breaks));
-				saveToMapFile($map,$layer,$field,$style,$breaks,$colors);
+				saveToMapFile($map,$layer,$field,$style,$breaks,$colors,$mapfile);
 			}
 		}
 		
@@ -86,7 +91,7 @@
 		fclose($fp);
 	}
 
-	function saveToMapFile($map,$layer,$field,$style,$breaks,$colors) {
+	function saveToMapFile($map,$layer,$field,$style,$breaks,$colors,$mapfile) {
 		$symbol = $style;
 		//remove old classes for layer $layer
 		while ($layer->numclasses > 0) {
@@ -116,11 +121,20 @@
 			$style = new styleObj($class);
 			$style->color->setRGB($colors[$i][0],$colors[$i][1],$colors[$i][2]);
 			$style->outlinecolor->setRGB(0,0,0);
-			$style->width = 0.26;
+
+			if ($layer->type == 0) {
+				$style->size = 8;
+				$style->outlinecolor->setRGB(0,0,0);
+				$style->symbolname = "sld_mark_symbol_circle_filled";	
+			} else if ($layer->type == 1) {
+				$style->size = 2;
+			} else if ($layer->type == 2) {
+				$style->width = 0.26;
+			}
 		}
 
 		//save map
-		$map->save($map->mappath . "DEU_adm1.map");
+		$map->save($mapfile);
 		// $map->save($map->mappath . "points.map");	
 	}
 
