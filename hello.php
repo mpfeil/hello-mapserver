@@ -3,12 +3,6 @@
 	echo "/var/www/2213/chapter02/lines.map <br/>";
 	echo "/var/www/2213/chapter02/points.map";
 
-	// //read all attributes of layer
-	// $attributes = $layer->getItems();
-	// $ogrinfo = array();
-	// exec('ogrinfo -q /home/matthias/Downloads/ci08au12.shp -sql "SELECT * FROM ci08au12" -fid 1',$ogrinfo);
-	// print_r($ogrinfo);
-
 	// $sym1 = $map->getsymbolobjectbyid(0);
 	// $sym2 = $map->getsymbolobjectbyid(1);
 	// $sym3 = $map->getsymbolobjectbyid(2);
@@ -127,6 +121,12 @@
 				$style->size = 2;
 			} else if ($layer->type == 2) {
 				$style->width = 0.26;
+				$style2 = new styleObj($class);
+				$style2->symbolname = "x-line";
+				$style2->color->setRGB(0,0,0);
+				// $style2->outlinecolor->setRGB(0,0,0);
+				$style2->size = 35;
+				$style2->width = 5;
 			}
 		}
 
@@ -483,7 +483,7 @@
 			<h1>Layers</h1>
 			<select name="cbLayers" onchange="document.style.submit();">
 				<?php
-					echo "<option value='null'>-- Select a layer --</option>";
+					echo "<option value=''>-- Select a layer --</option>";
 					if (isset($_POST["mapfileLocation"]) != "") {
 						$map = new mapObj($_POST["mapfileLocation"]);
 						$layers = $map->getAllLayerNames();
@@ -513,48 +513,33 @@
 			<br />
 			<select name="field">
 				<?php
-					if ($_POST['cbLayers'] != "") {
+					if (!empty($_POST['cbLayers'])) {
 						$layerName = $_POST["cbLayers"];
 						$layer = $map->getLayerByName("$layerName");
+						$layerData = $layer->data;
 						
-						//open layer to work with it
-						$status = $layer->open();
-
-						// //read all attributes of layer
-						$attributes = $layer->getItems();
-					}
-
-					if ($layerName != "") {
-
-						$style = $_POST["styles"];	
-						
-						if ($style == "graduatedSymbol") {
-							foreach ($attributes as $key => $value) {
-								$isNumeric = false;
-								//get shapes from layer and look up attribute values
-								$status = $layer->whichShapes($map->extent);
-								while ($shape = $layer->nextShape())
-								{
-									if (is_numeric($shape->values["$value"])) {
-										$isNumeric = true;
-									} else {
-										$isNumeric = false;
-										break 1;
+						if ($layer) {
+							$style = $_POST["styles"];	
+							$ogrinfoQuery = 'ogrinfo -q ' . $layerData . ' -sql "SELECT * FROM ' . $layerName . '" -fid 1';
+							$ogrinfo = array();
+							exec($ogrinfoQuery,$ogrinfo);
+							
+							if ($style == "graduatedSymbol") {
+								for ($i=3; $i < count($ogrinfo); $i++) {
+									if (strpos($ogrinfo[$i], "(Real)") || strpos($ogrinfo[$i], "(Integer)")) {
+										$field = explode(" (", $ogrinfo[$i]);
+										echo "<script>console.log($field[0]);</script>";
+										echo "<option value='$field[0]'>" . $field[0] . "</option>";
 									}
-								}
-								if ($isNumeric) {
-									echo "<option value='$value'>" . $value . "</option>";
-								}
-							}	
-						} else {
-							foreach ($attributes as $key => $value) {
-								echo "<option value='$value'>". $value . "</option>";
-							}	
+								}	
+							} else {
+								for ($i=3; $i < count($ogrinfo); $i++) {
+									$field = explode(" (", $ogrinfo[$i]);
+									echo "<script>console.log($field[0]);</script>";
+									echo "<option value='$field[0]'>" . $field[0] . "</option>";
+								}	
+							}
 						}
-					} else {
-						foreach ($attributes as $key => $value) {
-							echo "<option value='$value'>". $value . "</option>";
-						}	
 					}
 				?>
 			</select>
