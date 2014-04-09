@@ -22,7 +22,7 @@
 		$field = "";
 
 		if (isset($_POST["field"])) {
-			$field = $_POST["field"];
+			$field = trim($_POST["field"]);
 		} else {
 			$field = "NAME_1";
 		}
@@ -121,12 +121,12 @@
 				$style->size = 2;
 			} else if ($layer->type == 2) {
 				$style->width = 0.26;
-				$style2 = new styleObj($class);
-				$style2->symbolname = "x-line";
-				$style2->color->setRGB(0,0,0);
-				// $style2->outlinecolor->setRGB(0,0,0);
-				$style2->size = 35;
-				$style2->width = 5;
+				// $style2 = new styleObj($class);
+				// $style2->symbolname = "x-line";
+				// $style2->color->setRGB(0,0,0);
+				// // $style2->outlinecolor->setRGB(0,0,0);
+				// $style2->size = 35;
+				// $style2->width = 5;
 			}
 		}
 
@@ -528,15 +528,15 @@
 								for ($i=3; $i < count($ogrinfo); $i++) {
 									if (strpos($ogrinfo[$i], "(Real)") || strpos($ogrinfo[$i], "(Integer)")) {
 										$field = explode(" (", $ogrinfo[$i]);
-										echo "<script>console.log($field[0]);</script>";
-										echo "<option value='$field[0]'>" . $field[0] . "</option>";
+										$field = trim($field[0]);
+										echo "<option value='$field'>" . $field . "</option>";
 									}
 								}	
 							} else {
 								for ($i=3; $i < count($ogrinfo); $i++) {
 									$field = explode(" (", $ogrinfo[$i]);
-									echo "<script>console.log($field[0]);</script>";
-									echo "<option value='$field[0]'>" . $field[0] . "</option>";
+									$field = trim($field[0]);
+									echo "<option value='$field'>" . $field . "</option>";
 								}	
 							}
 						}
