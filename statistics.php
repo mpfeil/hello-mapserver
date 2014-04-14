@@ -1,11 +1,7 @@
 <?php 
 
-	echo "TEST";
-
 	//generates equal interval symbols for $field of $layer with $classes $map,$layer,$field,$classes
 	function equalInterval($data, $classes) {
-
-		echo "equalInterval";
 
 		$min = min($data);;
 		$max = max($data);
