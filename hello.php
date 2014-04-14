@@ -1,20 +1,11 @@
 <?php
 
 	require_once('statistics.php');
+	require_once('symbolSet.php');
 
 	echo "/var/www/2213/chapter02/DEU_adm1.map <br/>";
 	echo "/var/www/2213/chapter02/lines.map <br/>";
 	echo "/var/www/2213/chapter02/points.map";
-
-	// $sym1 = $map->getsymbolobjectbyid(0);
-	// $sym2 = $map->getsymbolobjectbyid(1);
-	// $sym3 = $map->getsymbolobjectbyid(2);
-	// $sym4 = $map->getsymbolobjectbyid(3);
-
-	// echo $sym1->name . "....<br />";
-	// echo $sym2->name . "<br />";
-	// echo $sym3->name . "<br />";
-	// echo $sym4->name . "<br />";
 
 	if (isset($_POST["submitStyle"])) {
 		$style = $_POST["styles"];
@@ -285,6 +276,36 @@
 			<input name="startColor" class="color"> - <input name="endColor" class="color">
 			<input type="submit" name="submitStyle">
 		</form>
+		<hr>
+			<table>
+				<thead>
+					<tr>
+						<th>Symbol</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						if ($_POST["submitStyle"]) {
+							$symbols = "";
+							$symbolSet = new SymbolSet($map->symbolsetfilename);
+
+							for ($i=0; $i < count($symbolSet->getSymbols()); $i++) {
+								$symbolName = $symbolSet->getSymbols()[$i]->getName();
+								$symbols = $symbols . "<option value='$symbolName'>$symbolName</option>";
+							}
+
+							for ($i=0; $i < $layer->numclasses; $i++) { 
+								$class = $layer->getClass($i);
+								echo "<tr>";
+								echo "<td><select>$symbols</select></td><td>$class->name</td>";
+								echo "</tr>";
+							}
+						}
+						
+					?>
+				</tbody>
+			</table>
 		<hr>
 		<div style="float:left;width:600px;">
 			<IMG SRC=<?php echo $image_url; ?> >	
