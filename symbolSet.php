@@ -36,7 +36,11 @@
 						$newSymbol = new Symbol(); 
 					}
 					if (strpos($line, "NAME") === 0) {
-						$newSymbol->setName(split(" ", $line)[1]);	
+						$name = split(" ", $line)[1];
+						$name = trim($name, '"');
+						$name = rtrim($name, '"');
+						// $newSymbol->setName(split(" ", $line)[1]);	
+						$newSymbol->setName($name);	
 					}
 					if (strpos($line, "TYPE") === 0) {
 						$newSymbol->setType(split(" ", $line)[1]);
