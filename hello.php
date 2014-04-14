@@ -118,11 +118,17 @@
 				$style->outlinecolor->setRGB(0,0,0);
 				$style->symbolname = "sld_mark_symbol_circle_filled";	
 			} else if ($layer->type == 1) {
-				$style->size = 2;
+				// $style->updateFromString("PATTERN 40 10 END");
+				$style->width = 2;
+				// $style2 = new styleObj($class);
+				// $style2->updateFromString("GAP 50 INITIALGAP 20");
+				// $style2->symbolname = "circlef";
+				// $style2->color->setRGB(0,0,0);
+				// $style2->size = 8;
 			} else if ($layer->type == 2) {
 				$style->width = 0.26;
 				// $style2 = new styleObj($class);
-				// $style2->symbolname = "x-line";
+				// $style2->symbolname = "downwarddiagonalfill";
 				// $style2->color->setRGB(0,0,0);
 				// // $style2->outlinecolor->setRGB(0,0,0);
 				// $style2->size = 35;
@@ -552,11 +558,38 @@
 				<option value="prettyBreaks">Pretty Breaks</option>	
 			</select>
 			<br />
-			<input <?php if ($_POST["styles"] != "graduatedSymbol") {echo 'hidden';} ?> type="number" min="0" max="20" step="1" value="5" name="classes"/>
+			<input <?php if ($_POST["styles"] != "graduatedSymbol") {echo 'hidden';} ?> type="number" min="1" max="20" step="1" value="5" name="classes"/>
 			<br />
 			<input name="startColor" class="color"> - <input name="endColor" class="color">
 			<input type="submit" name="submitStyle">
 		</form>
+		<hr>
+			<table>
+				<thead>
+					<tr>
+						<th>Symbol</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						if ($_POST["submitStyle"]) {
+							$symbols = "";
+							for ($i=0; $i < $map->getNumSymbols(); $i++) { 
+								$symbols += "<option value='$map->getSymbolObjectById($i)'>$map->getSymbolObjectById($i)</option>";
+							}
+							// $layer = $map->getLayerByName($_POST["cbLayers"]);
+							for ($i=0; $i < $layer->numclasses; $i++) { 
+								$class = $layer->getClass($i);
+								echo "<tr>";
+								echo "<td><select>$symbols</select></td><td>$class->name</td>";
+								echo "</tr>";
+							}
+						}
+						
+					?>
+				</tbody>
+			</table>
 		<hr>
 		<div style="float:left;width:600px;">
 			<IMG SRC=<?php echo $image_url; ?> >	
