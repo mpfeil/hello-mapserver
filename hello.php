@@ -7,8 +7,18 @@
 	echo "/var/www/2213/chapter02/lines.map <br/>";
 	echo "/var/www/2213/chapter02/points.map";
 
-	if (isset($_POST["selectsymbol"])) {
-		echo "SELECTSYMBOL";
+	if (isset($_POST["applyNewStyle"])) {
+		$map = new mapObj("/var/www/2213/chapter02/lines.map");
+		$layer = $map->getLayerByName("rs14fe02");
+		$mapfile = "/var/www/2213/chapter02/lines.map";
+		if (isset($_POST["size_list"])) {
+			updateStyles($map,$layer,$_POST["size_list"],$mapfile);
+		}
+
+		$image = $map->draw();
+    	$image_url = $image->saveWebImage();
+    	$legend = $map->drawLegend();
+    	$legend_url = $legend->saveWebImage();
 	}
 
 	if (isset($_POST["submitStyle"])) {
@@ -78,65 +88,6 @@
 		$fp = fopen("parcel-sld.xml", "a");
 		fputs( $fp, $sld );
 		fclose($fp);
-	}
-
-	function saveToMapFile($map,$layer,$field,$style,$breaks,$colors,$mapfile) {
-		$symbol = $style;
-		//remove old classes for layer $layer
-		while ($layer->numclasses > 0) {
-		    $layer->removeClass(0);
-		}
-		
-		//create classObject (set Name(Layername), set Expression(filter for different styling))
-		for ($i=0; $i < count($breaks); $i++) {
-			$class = new classObj($layer);
-			
-			if ($symbol == "categorizedSymbol") {
-				$class->set("name",$breaks[$i]);
-				$class->setExpression("('[$field]' = '$breaks[$i]')");	
-			} else {
-				$j= $i+1;
-				//check if it is the starting class
-				if ($i == 0) {
-					$class->set("name", $breaks[$i] . " - " . $breaks[$j]);
-					$class->setExpression("(([$field] >= $breaks[$i]) AND ([$field] <= $breaks[$j]))");	
-				} else if ($i < count($breaks)-1) {
-					$class->set("name", $breaks[$i] . " - " . $breaks[$j]);
-					$class->setExpression("(([$field] > $breaks[$i]) AND ([$field] <= $breaks[$j]))");
-				}	
-			}
-
-			//create styleObject
-			$style = new styleObj($class);
-			$style->color->setRGB($colors[$i][0],$colors[$i][1],$colors[$i][2]);
-			$style->outlinecolor->setRGB(0,0,0);
-
-			if ($layer->type == 0) { //Point
-				$style->size = rand(4,12);
-				$style->outlinecolor->setRGB(0,0,0);
-				$style->symbolname = "sld_mark_symbol_circle_filled";	
-			} else if ($layer->type == 1) { //Line
-				// $style->updateFromString("PATTERN 40 10 END");
-				$style->width = 2;
-				// $style2 = new styleObj($class);
-				// $style2->updateFromString("GAP 50 INITIALGAP 20");
-				// $style2->symbolname = "circlef";
-				// $style2->color->setRGB(0,0,0);
-				// $style2->size = 8;
-			} else if ($layer->type == 2) { //Polygon
-				$style->width = 0.26;
-				// $style2 = new styleObj($class);
-				// $style2->symbolname = "downwarddiagonalfill";
-				// $style2->color->setRGB(0,0,0);
-				// // $style2->outlinecolor->setRGB(0,0,0);
-				// $style2->size = 35;
-				// $style2->width = 5;
-			}
-		}
-
-		//save map
-		$map->save($mapfile);
-		// $map->save($map->mappath . "points.map");	
 	}
 
 	//Generates an array of colors for a colorramp and a number of features
@@ -243,33 +194,17 @@
 						
 						if ($layer) {
 							$style = $_POST["styles"];
-
-							// $ogrinfoQuery = 'ogrinfo -q ' . $layerData . ' -sql "SELECT * FROM ' . $layerName . '" -fid 1';
-							// $ogrinfo = array();
-							// exec($ogrinfoQuery,$ogrinfo);
 							
 							if ($style == "graduatedSymbol") {
 								$attributes = getLayerAttributes($layerData,$layerName,true);
 								foreach ($attributes as $key => $fieldName) {
 									echo "<option value='$fieldName'>" . $fieldName . "</option>";	
-								}
-								// for ($i=3; $i < count($ogrinfo); $i++) {
-								// 	if (strpos($ogrinfo[$i], "(Real)") || strpos($ogrinfo[$i], "(Integer)")) {
-								// 		$field = explode(" (", $ogrinfo[$i]);
-								// 		$field = trim($field[0]);
-								// 		echo "<option value='$field'>" . $field . "</option>";
-								// 	}
-								// }	
+								}	
 							} else {
 								$attributes = getLayerAttributes($layerData,$layerName);
 								foreach ($attributes as $key => $fieldName) {
 									echo "<option value='$fieldName'>" . $fieldName . "</option>";	
-								}
-								// for ($i=3; $i < count($ogrinfo); $i++) {
-								// 	$field = explode(" (", $ogrinfo[$i]);
-								// 	$field = trim($field[0]);
-								// 	echo "<option value='$field'>" . $field . "</option>";
-								// }	
+								}	
 							}
 						}
 					}
@@ -290,6 +225,7 @@
 			<input type="submit" name="submitStyle">
 		</form>
 		<hr>
+		<form name="newStyle" method="POST">
 			<table>
 				<thead>
 					<tr>
@@ -311,7 +247,8 @@
 							for ($i=0; $i < $layer->numclasses; $i++) { 
 								$class = $layer->getClass($i);
 								echo "<tr>";
-								echo "<td><select name='selectsymbol'>$symbols</select></td><td>$class->name</td>";
+								echo "<td><input type='number' min='1' max='20' step='1' value='5' name='size_list[]'/></td><td><input type='text' value='$class->name' name='exp_list[]' readonly></td>";
+								// echo "<td><select name='selectsymbol'>$symbols</select></td><td>$class->name</td>";
 								echo "</tr>";
 							}
 						}
@@ -319,6 +256,8 @@
 					?>
 				</tbody>
 			</table>
+			<input type="submit" name="applyNewStyle" value="Apply new styles">
+		</form>
 		<hr>
 		<div style="float:left;width:600px;">
 			<IMG SRC=<?php echo $image_url; ?> >	

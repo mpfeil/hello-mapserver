@@ -154,6 +154,74 @@
 		}
 	}
 
+	function saveToMapFile($map,$layer,$field,$style,$breaks,$colors,$mapfile) {
+		$symbol = $style;
+		//remove old classes for layer $layer
+		while ($layer->numclasses > 0) {
+		    $layer->removeClass(0);
+		}
+		
+		//create classObject (set Name(Layername), set Expression(filter for different styling))
+		for ($i=0; $i < count($breaks); $i++) {
+			$class = new classObj($layer);
+			
+			if ($symbol == "categorizedSymbol") {
+				$class->set("name",$breaks[$i]);
+				$class->setExpression("('[$field]' = '$breaks[$i]')");	
+			} else {
+				$j= $i+1;
+				//check if it is the starting class
+				if ($i == 0) {
+					$class->set("name", $breaks[$i] . " - " . $breaks[$j]);
+					$class->setExpression("(([$field] >= $breaks[$i]) AND ([$field] <= $breaks[$j]))");	
+				} else if ($i < count($breaks)-1) {
+					$class->set("name", $breaks[$i] . " - " . $breaks[$j]);
+					$class->setExpression("(([$field] > $breaks[$i]) AND ([$field] <= $breaks[$j]))");
+				}	
+			}
+
+			//create styleObject
+			$style = new styleObj($class);
+			$style->color->setRGB($colors[$i][0],$colors[$i][1],$colors[$i][2]);
+			$style->outlinecolor->setRGB(0,0,0);
+
+			if ($layer->type == 0) { //Point
+				$style->size = rand(4,12);
+				$style->outlinecolor->setRGB(0,0,0);
+				$style->symbolname = "sld_mark_symbol_circle_filled";	
+			} else if ($layer->type == 1) { //Line
+				// $style->updateFromString("PATTERN 40 10 END");
+				$style->width = 2;
+				// $style2 = new styleObj($class);
+				// $style2->updateFromString("GAP 50 INITIALGAP 20");
+				// $style2->symbolname = "circlef";
+				// $style2->color->setRGB(0,0,0);
+				// $style2->size = 8;
+			} else if ($layer->type == 2) { //Polygon
+				$style->width = 0.26;
+				// $style2 = new styleObj($class);
+				// $style2->symbolname = "downwarddiagonalfill";
+				// $style2->color->setRGB(0,0,0);
+				// // $style2->outlinecolor->setRGB(0,0,0);
+				// $style2->size = 35;
+				// $style2->width = 5;
+			}
+		}
+
+		//save map
+		$map->save($mapfile);
+		// $map->save($map->mappath . "points.map");	
+	}
+
+	function updateStyles($map,$layer,$newStyle,$mapfile) {
+		for ($i=0; $i < $layer->numclasses; $i++) { 
+			$class = $layer->getClass($i);
+			$styleOfClass = $class->getStyle(0);
+			$styleOfClass->width = $newStyle[$i];
+			$map->save($mapfile);
+		}
+	}
+
 	function getLayerAttributes($dataSource, $layerName, $onlyContinuesAttributes) {
 		$ogrinfoQuery = 'ogrinfo -q ' . $dataSource . ' -sql "SELECT * FROM ' . $layerName . '" -fid 1';
 		$ogrinfo = array();
