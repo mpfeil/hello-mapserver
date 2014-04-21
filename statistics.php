@@ -1,6 +1,6 @@
 <?php 
 
-	//generates equal interval symbols for $field of $layer with $classes $map,$layer,$field,$classes
+	//generates equal interval symbols
 	function equalInterval($data, $classes) {
 
 		$min = min($data);;

@@ -209,17 +209,28 @@
 		}
 
 		//save map
-		$map->save($mapfile);
-		// $map->save($map->mappath . "points.map");	
+		$map->save($mapfile);	
 	}
 
-	function updateStyles($map,$layer,$newStyle,$mapfile) {
+	function updateStyles($mapfile,$layerName,$newStyle) {
+
+		$map = new mapObj($mapfile);
+		$layer = $map->getLayerByName($layerName);
+
 		for ($i=0; $i < $layer->numclasses; $i++) { 
 			$class = $layer->getClass($i);
 			$styleOfClass = $class->getStyle(0);
-			$styleOfClass->width = $newStyle[$i];
-			$map->save($mapfile);
+
+			if ($layer->type == 0) { //Point
+				$styleOfClass->size = $newStyle[$i];
+			} else if ($layer->type == 1) { //Line
+				$styleOfClass->width = $newStyle[$i];
+			} else if ($layer->type == 2) { //Polygon
+				$styleOfClass->width = $newStyle[$i];
+			}
 		}
+
+		$map->save($mapfile);
 	}
 
 	function getLayerAttributes($dataSource, $layerName, $onlyContinuesAttributes) {

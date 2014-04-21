@@ -8,13 +8,12 @@
 	echo "/var/www/2213/chapter02/points.map";
 
 	if (isset($_POST["applyNewStyle"])) {
-		$map = new mapObj("/var/www/2213/chapter02/lines.map");
-		$layer = $map->getLayerByName("rs14fe02");
-		$mapfile = "/var/www/2213/chapter02/lines.map";
+
 		if (isset($_POST["size_list"])) {
-			updateStyles($map,$layer,$_POST["size_list"],$mapfile);
+			updateStyles($_POST["mapfileLocation"],$_POST["cbLayers"],$_POST["size_list"]);
 		}
 
+		$map = new mapObj($_POST["mapfileLocation"]);
 		$image = $map->draw();
     	$image_url = $image->saveWebImage();
     	$legend = $map->drawLegend();
@@ -22,6 +21,7 @@
 	}
 
 	if (isset($_POST["submitStyle"])) {
+
 		$style = $_POST["styles"];
 		$startColor = hex2rgb($_POST["startColor"]);
 		$endColor = hex2rgb($_POST["endColor"]);
@@ -140,6 +140,16 @@
 	   //return implode(",", $rgb); // returns the rgb values separated by commas
 	   return $rgb; // returns an array with the rgb values
 	}
+
+	//Convert rgb to hex
+	function rgb2hex($rgb) {
+	   $hex = "#";
+	   $hex .= str_pad(dechex($rgb[0]), 2, "0", STR_PAD_LEFT);
+	   $hex .= str_pad(dechex($rgb[1]), 2, "0", STR_PAD_LEFT);
+	   $hex .= str_pad(dechex($rgb[2]), 2, "0", STR_PAD_LEFT);
+
+	   return $hex; // returns the hex value including the number sign (#)
+	}
 ?>
 <html>
 	<head>
@@ -223,31 +233,33 @@
 			<br />
 			<input name="startColor" class="color"> - <input name="endColor" class="color">
 			<input type="submit" name="submitStyle">
-		</form>
-		<hr>
-		<form name="newStyle" method="POST">
+			<hr>
 			<table>
 				<thead>
 					<tr>
 						<th>Symbol</th>
+						<th></th>
 						<th>Value</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-						if ($_POST["submitStyle"]) {
-							$symbols = "";
-							$symbolSet = new SymbolSet($map->symbolsetfilename);
+						if ($_POST["submitStyle"] || $_POST["applyNewStyle"]) {
+							// $symbols = "";
+							// $symbolSet = new SymbolSet($map->symbolsetfilename);
 
-							for ($i=0; $i < count($symbolSet->getSymbols()); $i++) {
-								$symbolName = $symbolSet->getSymbols()[$i]->getName();
-								$symbols = $symbols . "<option value='$symbolName'>$symbolName</option>";
-							}
+							// for ($i=0; $i < count($symbolSet->getSymbols()); $i++) {
+							// 	$symbolName = $symbolSet->getSymbols()[$i]->getName();
+							// 	$symbols = $symbols . "<option value='$symbolName'>$symbolName</option>";
+							// }
 
 							for ($i=0; $i < $layer->numclasses; $i++) { 
 								$class = $layer->getClass($i);
+								$styleOfClass = $class->getStyle(0);
+								$color = array($styleOfClass->color->red,$styleOfClass->color->green,$styleOfClass->color->blue);
+								$color = rgb2hex($color);
 								echo "<tr>";
-								echo "<td><input type='number' min='1' max='20' step='1' value='5' name='size_list[]'/></td><td><input type='text' value='$class->name' name='exp_list[]' readonly></td>";
+								echo "<td><input type='number' min='1' max='20' step='0.1' value='$styleOfClass->width' name='size_list[]'/></td><td><input name='color_list[]' class='color' value='$color'></td><td><input type='text' value='$class->name' name='exp_list[]' readonly></td>";
 								// echo "<td><select name='selectsymbol'>$symbols</select></td><td>$class->name</td>";
 								echo "</tr>";
 							}
@@ -256,7 +268,7 @@
 					?>
 				</tbody>
 			</table>
-			<input type="submit" name="applyNewStyle" value="Apply new styles">
+			<input type="submit" name="applyNewStyle" value="Apply">
 		</form>
 		<hr>
 		<div style="float:left;width:600px;">
