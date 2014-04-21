@@ -31,7 +31,7 @@
 	      $b = hexdec(substr($hex,4,2));
 	   }
 	   $rgb = array($r, $g, $b);
-	   //return implode(",", $rgb); // returns the rgb values separated by commas
+	   
 	   return $rgb; // returns an array with the rgb values
 	}
 

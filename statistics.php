@@ -3,7 +3,7 @@
 	//generates equal interval symbols
 	function equalInterval($data, $classes) {
 
-		$min = min($data);;
+		$min = min($data);
 		$max = max($data);
 		$range = ($max - $min) / $classes;
 		$resultArray = array();

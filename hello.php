@@ -198,13 +198,17 @@
 								$styleOfClass = $class->getStyle(0);
 								$color = array($styleOfClass->color->red,$styleOfClass->color->green,$styleOfClass->color->blue);
 								$color = rgb2hex($color);
-								if ($layer->type == 0) { //Point
-									$size = $styleOfClass->size;	
-								} else if ($layer->type == 1) { //Line
-									$size = $styleOfClass->width;
-								} else if ($layer->type == 2) { //Polygon
-									$size = $styleOfClass->width;
+
+								switch ($layer->type) {
+									case '0': //Point
+										$size = $styleOfClass->size;
+										break;
+									
+									default: //Line and Polygon
+										$size = $styleOfClass->width;
+										break;
 								}
+
 								echo "<tr>";
 								echo "<td><input type='number' min='0' max='20' step='any' value='$size' name='size_list[]'/></td><td><input name='color_list[]' class='color' value='$color'></td><td><input type='text' value='$class->name' name='exp_list[]' readonly></td>";
 								// echo "<td><select name='selectsymbol'>$symbols</select></td><td>$class->name</td>";
