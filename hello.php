@@ -1,6 +1,7 @@
 <?php
 
 	require_once('statistics.php');
+	require_once('functions.php');
 	require_once('MapScriptHelper.php');
 
 	echo "/var/www/2213/chapter02/DEU_adm1.map <br/>";
@@ -10,7 +11,7 @@
 	if (isset($_POST["applyNewStyle"])) {
 
 		if (isset($_POST["size_list"])) {
-			updateStyles($_POST["mapfileLocation"],$_POST["cbLayers"],$_POST["size_list"]);
+			updateStyles($_POST["mapfileLocation"],$_POST["cbLayers"],$_POST["size_list"],$_POST["color_list"]);
 		}
 
 		$map = new mapObj($_POST["mapfileLocation"]);
@@ -88,67 +89,6 @@
 		$fp = fopen("parcel-sld.xml", "a");
 		fputs( $fp, $sld );
 		fclose($fp);
-	}
-
-	//Generates an array of colors for a colorramp and a number of features
-	function getColors($startColor, $endColor, $count) {
-		$resultArray = array();
-
-		$c1 = $startColor; // start color
-		$c2 = $endColor; // end color
-		$nc = $count; // Number of colors to display.
-		$dc = array(($c2[0]-$c1[0])/($nc-1),($c2[1]-$c1[1])/($nc-1),($c2[2]-$c1[2])/($nc-1)); // Step between colors
-
-		for ($i=0;$i<$nc;$i++){
-			$newColor = array(round($c1[0]+$dc[0]*$i),round($c1[1]+$dc[1]*$i),round($c1[2]+$dc[2]*$i));
-		    array_push($resultArray, $newColor);
-		}
-
-		return $resultArray;	
-	}
-
-	function getNumOfFeatures($map,$layer,$field) {
-		$resultArray = array();
-
-		$status = $layer->open();
-		$status = $layer->whichShapes($map->extent);	
-		while ($shape = $layer->nextShape())
-		{
-			if (!in_array($shape->values[$field], $resultArray)) {
-				array_push($resultArray, $shape->values[$field]);
-			}
-		}
-		$layer->close();
-
-		return $resultArray;
-	}
-
-	//Convert hex color code to rgb
-	function hex2rgb($hex) {
-	   $hex = str_replace("#", "", $hex);
-
-	   if(strlen($hex) == 3) {
-	      $r = hexdec(substr($hex,0,1).substr($hex,0,1));
-	      $g = hexdec(substr($hex,1,1).substr($hex,1,1));
-	      $b = hexdec(substr($hex,2,1).substr($hex,2,1));
-	   } else {
-	      $r = hexdec(substr($hex,0,2));
-	      $g = hexdec(substr($hex,2,2));
-	      $b = hexdec(substr($hex,4,2));
-	   }
-	   $rgb = array($r, $g, $b);
-	   //return implode(",", $rgb); // returns the rgb values separated by commas
-	   return $rgb; // returns an array with the rgb values
-	}
-
-	//Convert rgb to hex
-	function rgb2hex($rgb) {
-	   $hex = "#";
-	   $hex .= str_pad(dechex($rgb[0]), 2, "0", STR_PAD_LEFT);
-	   $hex .= str_pad(dechex($rgb[1]), 2, "0", STR_PAD_LEFT);
-	   $hex .= str_pad(dechex($rgb[2]), 2, "0", STR_PAD_LEFT);
-
-	   return $hex; // returns the hex value including the number sign (#)
 	}
 ?>
 <html>
@@ -258,8 +198,15 @@
 								$styleOfClass = $class->getStyle(0);
 								$color = array($styleOfClass->color->red,$styleOfClass->color->green,$styleOfClass->color->blue);
 								$color = rgb2hex($color);
+								if ($layer->type == 0) { //Point
+									$size = $styleOfClass->size;	
+								} else if ($layer->type == 1) { //Line
+									$size = $styleOfClass->width;
+								} else if ($layer->type == 2) { //Polygon
+									$size = $styleOfClass->width;
+								}
 								echo "<tr>";
-								echo "<td><input type='number' min='1' max='20' step='0.1' value='$styleOfClass->width' name='size_list[]'/></td><td><input name='color_list[]' class='color' value='$color'></td><td><input type='text' value='$class->name' name='exp_list[]' readonly></td>";
+								echo "<td><input type='number' min='0' max='20' step='any' value='$size' name='size_list[]'/></td><td><input name='color_list[]' class='color' value='$color'></td><td><input type='text' value='$class->name' name='exp_list[]' readonly></td>";
 								// echo "<td><select name='selectsymbol'>$symbols</select></td><td>$class->name</td>";
 								echo "</tr>";
 							}

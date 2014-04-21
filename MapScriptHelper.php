@@ -1,4 +1,7 @@
 <?php
+	
+	require_once('functions.php');
+
 	class SymbolSet {
 		private $file = "";
 		private $symbols = array();
@@ -186,7 +189,8 @@
 			$style->outlinecolor->setRGB(0,0,0);
 
 			if ($layer->type == 0) { //Point
-				$style->size = rand(4,12);
+				// $style->size = rand(4,12);
+				$style->size = 4;
 				$style->outlinecolor->setRGB(0,0,0);
 				$style->symbolname = "sld_mark_symbol_circle_filled";	
 			} else if ($layer->type == 1) { //Line
@@ -212,7 +216,7 @@
 		$map->save($mapfile);	
 	}
 
-	function updateStyles($mapfile,$layerName,$newStyle) {
+	function updateStyles($mapfile,$layerName,$newStyle,$newColors) {
 
 		$map = new mapObj($mapfile);
 		$layer = $map->getLayerByName($layerName);
@@ -220,13 +224,16 @@
 		for ($i=0; $i < $layer->numclasses; $i++) { 
 			$class = $layer->getClass($i);
 			$styleOfClass = $class->getStyle(0);
-
+			$color = hex2rgb($newColors[$i]);
 			if ($layer->type == 0) { //Point
 				$styleOfClass->size = $newStyle[$i];
+				$styleOfClass->color->setRGB($color[0],$color[1],$color[2]);
 			} else if ($layer->type == 1) { //Line
 				$styleOfClass->width = $newStyle[$i];
+				$styleOfClass->color->setRGB($color[0],$color[1],$color[2]);
 			} else if ($layer->type == 2) { //Polygon
 				$styleOfClass->width = $newStyle[$i];
+				$styleOfClass->color->setRGB($color[0],$color[1],$color[2]);
 			}
 		}
 
@@ -255,5 +262,21 @@
 		}
 
 		return $result;
+	}
+
+	function getNumOfFeatures($map,$layer,$field) {
+		$resultArray = array();
+
+		$status = $layer->open();
+		$status = $layer->whichShapes($map->extent);	
+		while ($shape = $layer->nextShape())
+		{
+			if (!in_array($shape->values[$field], $resultArray)) {
+				array_push($resultArray, $shape->values[$field]);
+			}
+		}
+		$layer->close();
+
+		return $resultArray;
 	}
 ?>
