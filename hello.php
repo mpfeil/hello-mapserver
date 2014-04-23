@@ -6,6 +6,8 @@
 
 	echo "/var/www/2213/chapter02/DEU_adm1.map <br/>";
 	echo "/var/www/2213/chapter02/lines.map <br/>";
+	echo "/var/www/2213/chapter02/roadspt.map <br/>";
+	echo "/var/www/2213/chapter02/placespt.map <br/>";
 	echo "/var/www/2213/chapter02/points.map";
 
 	if (isset($_POST["applyNewStyle"])) {

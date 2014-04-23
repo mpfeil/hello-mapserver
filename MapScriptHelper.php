@@ -271,8 +271,10 @@
 		$status = $layer->whichShapes($map->extent);	
 		while ($shape = $layer->nextShape())
 		{
-			if (!in_array($shape->values[$field], $resultArray)) {
-				array_push($resultArray, $shape->values[$field]);
+			if (!empty($shape->values[$field])) {
+				if (!in_array($shape->values[$field], $resultArray)) {
+					array_push($resultArray, $shape->values[$field]);
+				}
 			}
 		}
 		$layer->close();

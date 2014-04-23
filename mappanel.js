@@ -21,15 +21,15 @@ Ext.application({
         // Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider', {
         //     expires: new Date(new Date().getTime()+(1000*60*60*24*7)) //7 days from now
         // }));
-        var mapfile = "DEU_adm1.map";
+        var mapfile = "lines.map";
 
         var map = new OpenLayers.Map({});
         
         var layer = new OpenLayers.Layer.WMS( 
             "OpenLayers WMS",
-            "http://localhost/cgi-bin/mapserv?map=/var/www/2213/chapter02/DEU_adm1.map", 
+            "http://localhost/cgi-bin/mapserv?map=/var/www/2213/chapter02/lines.map", 
             {
-                layers: 'DEU_adm1'
+                layers: 'rs14fe02'
             } 
         );
         
@@ -61,7 +61,7 @@ Ext.application({
         // give the record of the 1st layer a legendURL, which will cause
         // UrlLegend instead of WMSLegend to be used
         var layerRec0 = mappanel.layers.getAt(0);
-        layerRec0.set("legendURL", "http://localhost/cgi-bin/mapserv?map=/var/www/2213/chapter02/DEU_adm1.map&version=1.1.1&service=WMS&request=GetLegendGraphic&layer=DEU_adm1&format=image/png&STYLE=default");
+        layerRec0.set("legendURL", "http://localhost/cgi-bin/mapserv?map=/var/www/2213/chapter02/lines.map&version=1.1.1&service=WMS&request=GetLegendGraphic&layer=rs14fe02&format=image/png&STYLE=default");
 
         legendPanel = Ext.create('GeoExt.panel.Legend', {
             defaults: {
