@@ -189,12 +189,11 @@
 			$style->outlinecolor->setRGB(0,0,0);
 
 			if ($layer->type == 0) { //Point
-				// $style->size = rand(4,12);
 				$style->size = 4;
 				$style->outlinecolor->setRGB(0,0,0);
 				$style->symbolname = "sld_mark_symbol_circle_filled";	
 			} else if ($layer->type == 1) { //Line
-				// $style->updateFromString("PATTERN 40 10 END");
+				// $style->updateFromString("PATTERN 40 10 10 40 END");
 				$style->width = 2;
 				// $style2 = new styleObj($class);
 				// $style2->updateFromString("GAP 50 INITIALGAP 20");
@@ -216,24 +215,28 @@
 		$map->save($mapfile);	
 	}
 
-	function updateStyles($mapfile,$layerName,$newStyle,$newColors) {
+	function updateStyles($mapfile,$layerName,$newStyle,$newColors,$alphaValues) {
 
 		$map = new mapObj($mapfile);
 		$layer = $map->getLayerByName($layerName);
 
 		for ($i=0; $i < $layer->numclasses; $i++) { 
 			$class = $layer->getClass($i);
+			// $class->updateFromString('CLASS STYLE COLOR 255 0 255 END END');
 			$styleOfClass = $class->getStyle(0);
+
 			$color = hex2rgb($newColors[$i]);
+			$color[3] = $alphaValues[$i]*255;
+			$colorHEX = rgb2hex($color);
+			$newColor = 'COLOR "'.$colorHEX.'"';
+			$styleOfClass->updateFromString($newColor);
+
 			if ($layer->type == 0) { //Point
 				$styleOfClass->size = $newStyle[$i];
-				$styleOfClass->color->setRGB($color[0],$color[1],$color[2]);
 			} else if ($layer->type == 1) { //Line
 				$styleOfClass->width = $newStyle[$i];
-				$styleOfClass->color->setRGB($color[0],$color[1],$color[2]);
 			} else if ($layer->type == 2) { //Polygon
 				$styleOfClass->width = $newStyle[$i];
-				$styleOfClass->color->setRGB($color[0],$color[1],$color[2]);
 			}
 		}
 

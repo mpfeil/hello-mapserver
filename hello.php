@@ -13,7 +13,7 @@
 	if (isset($_POST["applyNewStyle"])) {
 
 		if (isset($_POST["size_list"])) {
-			updateStyles($_POST["mapfileLocation"],$_POST["cbLayers"],$_POST["size_list"],$_POST["color_list"]);
+			updateStyles($_POST["mapfileLocation"],$_POST["cbLayers"],$_POST["size_list"],$_POST["color_list"],$_POST["alpha_list"]);
 		}
 
 		$map = new mapObj($_POST["mapfileLocation"]);
@@ -181,6 +181,7 @@
 					<tr>
 						<th>Symbol</th>
 						<th></th>
+						<th></th>
 						<th>Value</th>
 					</tr>
 				</thead>
@@ -212,7 +213,7 @@
 								}
 
 								echo "<tr>";
-								echo "<td><input type='number' min='0' max='20' step='any' value='$size' name='size_list[]'/></td><td><input name='color_list[]' class='color' value='$color'></td><td><input type='text' value='$class->name' name='exp_list[]' readonly></td>";
+								echo "<td><input type='number' min='0' max='20' step='any' value='$size' name='size_list[]'/></td><td><input name='color_list[]' class='color' value='$color'></td><td><input type='number' min='0' max='1' step='0.1' value='0.5' name='alpha_list[]'/></td><td><input type='text' value='$class->name' name='exp_list[]' readonly></td>";
 								// echo "<td><select name='selectsymbol'>$symbols</select></td><td>$class->name</td>";
 								echo "</tr>";
 							}

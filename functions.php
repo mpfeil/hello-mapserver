@@ -1,5 +1,4 @@
 <?php
-
 	//Generates an array of colors for a colorramp and a number of features
 	function getColors($startColor, $endColor, $count) {
 		$resultArray = array();
@@ -19,29 +18,35 @@
 
 	//Convert hex color code to rgb
 	function hex2rgb($hex) {
-	   $hex = str_replace("#", "", $hex);
+		$hex = str_replace("#", "", $hex);
 
-	   if(strlen($hex) == 3) {
-	      $r = hexdec(substr($hex,0,1).substr($hex,0,1));
-	      $g = hexdec(substr($hex,1,1).substr($hex,1,1));
-	      $b = hexdec(substr($hex,2,1).substr($hex,2,1));
-	   } else {
-	      $r = hexdec(substr($hex,0,2));
-	      $g = hexdec(substr($hex,2,2));
-	      $b = hexdec(substr($hex,4,2));
-	   }
-	   $rgb = array($r, $g, $b);
+		if(strlen($hex) == 3) {
+	   		$r = hexdec(substr($hex,0,1).substr($hex,0,1));
+	      	$g = hexdec(substr($hex,1,1).substr($hex,1,1));
+	      	$b = hexdec(substr($hex,2,1).substr($hex,2,1));
+	   	} else {
+	    	$r = hexdec(substr($hex,0,2));
+	      	$g = hexdec(substr($hex,2,2));
+	      	$b = hexdec(substr($hex,4,2));
+	      	$a = hexdec(substr($hex,6,2));
+	   	}
+	   	$rgb = array($r, $g, $b, $a);
 	   
-	   return $rgb; // returns an array with the rgb values
+	   	return $rgb; // returns an array with the rgb values
 	}
 
 	//Convert rgb to hex
 	function rgb2hex($rgb) {
-	   $hex = "#";
-	   $hex .= str_pad(dechex($rgb[0]), 2, "0", STR_PAD_LEFT);
-	   $hex .= str_pad(dechex($rgb[1]), 2, "0", STR_PAD_LEFT);
-	   $hex .= str_pad(dechex($rgb[2]), 2, "0", STR_PAD_LEFT);
+		$hex = "#";
+		$hex .= str_pad(dechex($rgb[0]), 2, "0", STR_PAD_LEFT);
+		$hex .= str_pad(dechex($rgb[1]), 2, "0", STR_PAD_LEFT);
+		$hex .= str_pad(dechex($rgb[2]), 2, "0", STR_PAD_LEFT);
 
-	   return $hex; // returns the hex value including the number sign (#)
+		//alpha
+	   	if (isset($rgb[3])) {
+	   		$hex .= str_pad(dechex(floor($rgb[3])), 2, "0", STR_PAD_LEFT);	
+	   	}
+
+	   	return $hex; // returns the hex value including the number sign (#)
 	}
 ?>
