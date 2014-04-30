@@ -186,28 +186,16 @@
 			//create styleObject
 			$style = new styleObj($class);
 			$style->color->setRGB($colors[$i][0],$colors[$i][1],$colors[$i][2]);
-			$style->outlinecolor->setRGB(0,0,0);
 
 			if ($layer->type == 0) { //Point
 				$style->size = 4;
 				$style->outlinecolor->setRGB(0,0,0);
 				$style->symbolname = "sld_mark_symbol_circle_filled";	
 			} else if ($layer->type == 1) { //Line
-				// $style->updateFromString("PATTERN 40 10 10 40 END");
 				$style->width = 2;
-				// $style2 = new styleObj($class);
-				// $style2->updateFromString("GAP 50 INITIALGAP 20");
-				// $style2->symbolname = "circlef";
-				// $style2->color->setRGB(0,0,0);
-				// $style2->size = 8;
 			} else if ($layer->type == 2) { //Polygon
 				$style->width = 0.26;
-				// $style2 = new styleObj($class);
-				// $style2->symbolname = "downwarddiagonalfill";
-				// $style2->color->setRGB(0,0,0);
-				// // $style2->outlinecolor->setRGB(0,0,0);
-				// $style2->size = 35;
-				// $style2->width = 5;
+				$style->outlinecolor->setRGB(0,0,0);
 			}
 		}
 
@@ -222,7 +210,6 @@
 
 		for ($i=0; $i < $layer->numclasses; $i++) { 
 			$class = $layer->getClass($i);
-			// $class->updateFromString('CLASS STYLE COLOR 255 0 255 END END');
 			$styleOfClass = $class->getStyle(0);
 
 			$color = hex2rgb($newColors[$i]);
